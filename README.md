@@ -10,21 +10,22 @@ Primul jucător (sau echipă) care formează o linie dreaptă de **cinci cuburi*
 - Așază cele 25 de cuburi în grila 5×5, toate cu fața goală în sus.
 - Decideți cine începe (de obicei prin înțelegere sau aruncare la sorți).
 - Jucătorii aleg semnul: unul X, celălalt O.
-Cum se desfășoară un tur
+## Cum se desfășoară un tur
 Pe rând, fiecare jucător face următoarele acțiuni (obligatoriu în această ordine):
-Alege un cub de pe marginea tablei (doar din rândul 1, 5 sau coloana 1, 5). Cubul ales poate fi:
-gol (față goală în sus), sau
-deja cu semnul tău (X sau O). Nu poți alege un cub cu semnul adversarului!
-Rotește cubul astfel încât semnul tău (X sau O) să fie în sus.
-Împinge cubul înapoi în același rând sau aceeași coloană din care l-ai luat, dar de pe o margine opusă sau adiacentă (nu în aceeași poziție de unde l-ai luat).
-Când împingi, toate cuburile din linie se deplasează cu o poziție.
-Cubul din capătul opus iese afară din grilă și devine „împins afară”.
-Important
-Trebuie să împingi linia astfel încât să completezi din nou grila 5×5.
-Cubul împins afară rămâne în afara tablei până la următorul tur (dar de fapt, în Quixo clasic, el devine disponibil pentru următorul jucător dacă e pe margine).
-Sfârșitul jocului
+1. Alege un cub de pe marginea tablei (doar din rândul 1, 5 sau coloana 1, 5). Cubul ales poate fi:
+    - gol (față goală în sus), sau
+    - deja cu semnul tău (X sau O). Nu poți alege un cub cu semnul adversarului!
+1. Rotește cubul astfel încât semnul tău (X sau O) să fie în sus.
+1. Împinge cubul înapoi în același rând sau aceeași coloană din care l-ai luat, dar de pe o margine opusă sau adiacentă (nu în aceeași poziție de unde l-ai luat).
+    - Când împingi, toate cuburile din linie se deplasează cu o poziție.
+    - Cubul din capătul opus iese afară din grilă și devine „împins afară”.
+## Important
+- Trebuie să împingi linia astfel încât să completezi din nou grila 5×5.
+- Cubul împins afară rămâne în afara tablei până la următorul tur (dar de fapt, în Quixo clasic, el devine disponibil pentru următorul jucător dacă e pe margine).
+## Sfârșitul jocului
 După fiecare mutare, verifică dacă există o linie de cinci cuburi identice (toate X sau toate O) pe orizontală, verticală sau diagonală.
+
 Dacă da → jucătorul care tocmai a mutat anunță victoria și câștigă.
-Remiză
+## Remiză
 Teoretic posibilă (toate cuburile umplute fără linie de 5), dar rar întâlnită.
 
