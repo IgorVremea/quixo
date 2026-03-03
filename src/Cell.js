@@ -3,16 +3,34 @@ class Cell {
         this.cellSize = cellSize;
         this.x = x;
         this.y = y;
-        // this.isHoverBool = false;
+        this.sign = '';
     }
 
-    draw(){
-        fill(CONFIG.cell.bgColor);
+    draw(hoverState = NORMAL){
         strokeWeight(5);
-        stroke(this.isHover() ? '#000' : CONFIG.canvas.bgColor);
+        stroke(hoverState == HOVER ? CONFIG.cell.borderColorHover : CONFIG.cell.borderColor);
+        fill(CONFIG.cell.bgColor);
         square(this.x, this.y, this.cellSize, 10);
+        this.setSign(this.sign);
     }
-
+    setSign(sign){
+        this.sign = sign;
+        noStroke();
+        textAlign(CENTER, CENTER);
+        textSize(CONFIG.cell.cellSize/1.5);
+        switch(sign){
+            case 'x':
+                fill('#F00');
+                text('x', (this.x + this.cellSize/2), (this.y + this.cellSize/2));
+                break;
+            case 'o':
+            fill('#00F');
+            text('o', (this.x + this.cellSize/2), (this.y + this.cellSize/2));
+            break;
+            default:
+                
+        }
+    }
     isHover(){
         if(mouseX >= this.x &&
             mouseX <= this.x + this.cellSize &&

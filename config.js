@@ -6,7 +6,12 @@ const CONFIG = {
     },
     cell: { 
         cellSize: 60,
-        bgColor: '#FFF'
+        bgColor: '#FFF',
+        get borderColor(){return CONFIG.canvas.bgColor;}, // Face o copie de valoare din canvas.bgColor sub nume borderColor
+        borderColorHover: '#000'
     }
     
 };
+
+const NORMAL = 0;
+const HOVER = 1;

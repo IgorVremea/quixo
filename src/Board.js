@@ -3,7 +3,7 @@ class Board{
         this.cellSize = cellSize;
         this.boardSize = cellSize*5;
         this.board = [];
-        for(let y = 0; y<5; y++){
+        for(let y = 0; y<5; y++){           // Initializarea terenului
             let row = [];
             for(let x = 0; x<5; x++){
                 row.push( new Cell(this.cellSize, (CONFIG.canvas.width-this.boardSize)/2+this.cellSize*x, (CONFIG.canvas.height-this.boardSize)/2+this.cellSize*y) );
@@ -16,19 +16,25 @@ class Board{
 
     draw(){
         background(CONFIG.canvas.bgColor);
-        let hoveredCell;
-        for(let y = 0; y<5; y++){
+        let hoverX;
+        let hoverY;
+        for(let y = 0; y<5; y++){                                       // Desenez teren
             for(let x = 0; x<5; x++){
                 this.board[x][y].draw();
-                if(mouseX >= this.x &&
+                if(mouseX >= this.x &&                          // Cursor trebuie sa fie pe teren in momentul verificarii
                     mouseX <= this.x + this.boardSize &&
                     mouseY >= this.y &&
                     mouseY <= this.y + this.boardSize
                     ){
-                    if(this.board[x][y].isHover()) hoveredCell = this.board[x][y];   
+                    if(this.board[x][y].isHover()) {
+                        hoverX = x;
+                        hoverY = y;
+                    }  
                 }
             }
         }
-        if(hoveredCell != undefined) hoveredCell.draw();
+        if((hoverX != undefined && hoverY != undefined) &&              // Evedentiez celula pe care este mouse
+            (hoverX < 1 ||  hoverX > 3 || hoverY < 1 || hoverY > 3)
+            ) this.board[hoverX][hoverY].draw(HOVER); 
     }
 }
