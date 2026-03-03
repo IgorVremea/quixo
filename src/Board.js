@@ -21,20 +21,25 @@ class Board{
         for(let y = 0; y<5; y++){                                       // Desenez teren
             for(let x = 0; x<5; x++){
                 this.board[x][y].draw();
-                if(mouseX >= this.x &&                          // Cursor trebuie sa fie pe teren in momentul verificarii
-                    mouseX <= this.x + this.boardSize &&
-                    mouseY >= this.y &&
-                    mouseY <= this.y + this.boardSize
-                    ){
-                    if(this.board[x][y].isHover()) {
-                        hoverX = x;
-                        hoverY = y;
-                    }  
+                if(this.board[x][y].isHover(mouseX, mouseY)) {
+                    hoverX = x;
+                    hoverY = y;
                 }
             }
         }
         if((hoverX != undefined && hoverY != undefined) &&              // Evedentiez celula pe care este mouse
-            (hoverX < 1 ||  hoverX > 3 || hoverY < 1 || hoverY > 3)
-            ) this.board[hoverX][hoverY].draw(HOVER); 
+            (hoverX < 1 ||  hoverX > 3 || hoverY < 1 || hoverY > 3)) {
+                this.board[hoverX][hoverY].draw(HOVER); 
+            }
+    }
+    getClickedCell(){
+        for(let y = 0; y<5; y++){
+            for(let x = 0; x<5; x++){
+                if(this.board[x][y].isHover(mouseX, mouseY)) {
+                    return this.board[x][y];
+                }
+            }
+        }
+        return null;
     }
 }

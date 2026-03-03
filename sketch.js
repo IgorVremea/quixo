@@ -9,3 +9,8 @@ function setup(){
 function draw() {
     board.draw();
 }
+
+function mousePressed(){
+    let clickedCell = board.getClickedCell();
+    if(clickedCell != null) clickedCell.sign = 'x'; // TODO: Sa continui de facut proces de schimbare a terenului
+}

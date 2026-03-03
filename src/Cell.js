@@ -24,18 +24,18 @@ class Cell {
                 text('x', (this.x + this.cellSize/2), (this.y + this.cellSize/2));
                 break;
             case 'o':
-            fill('#00F');
-            text('o', (this.x + this.cellSize/2), (this.y + this.cellSize/2));
-            break;
+                fill('#00F');
+                text('o', (this.x + this.cellSize/2), (this.y + this.cellSize/2));
+                break;
             default:
                 
         }
     }
-    isHover(){
-        if(mouseX >= this.x &&
-            mouseX <= this.x + this.cellSize &&
-            mouseY >= this.y &&
-            mouseY <= this.y + this.cellSize
+    isHover(mX, mY){
+        if(mX >= this.x &&
+            mX <= this.x + this.cellSize &&
+            mY >= this.y &&
+            mY <= this.y + this.cellSize
         ) {
             return true;
         }
