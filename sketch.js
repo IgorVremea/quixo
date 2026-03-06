@@ -1,9 +1,10 @@
 let board;
+let controller;
 
 function setup(){
     createCanvas(CONFIG.canvas.width, CONFIG.canvas.height);
     board = new Board(CONFIG.cell.cellSize);
-    
+    controller = new Controller(board);
 }
 
 function draw() {
@@ -11,6 +12,6 @@ function draw() {
 }
 
 function mousePressed(){
-    let clickedCell = board.getClickedCell();
-    if(clickedCell != null) clickedCell.sign = 'x'; // TODO: Sa continui de facut proces de schimbare a terenului
+    let clickedCell = board.getHoveredCell();
+    controller.setSignOnHoveredCell(clickedCell, 'x');
 }
