@@ -35,7 +35,8 @@ class Controller {
         if(cell != null
             && this.board.isCellOnEdge(cell.boardCoordX, cell.boardCoordY)
             && cell.type == CONFIG.cell.type.PIECE
-            && !this.isInChangeBoardMode) {
+            && !this.isInChangeBoardMode
+            && cell.sign == '') {
                 this.isInChangeBoardMode = true;
                 this.isChangedState = true;
                 this.changeBoardMode(cell);
