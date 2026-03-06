@@ -30,7 +30,7 @@ class Board{
                     case '→':    // Altcode 26
                     case '←':    // Altcode 27
                         signTemp = CONFIG.board.boardScheme[y][x];
-                        isActive = true;
+                        isActive = false;
                         typeTemp = CONFIG.cell.type.ARROW;
                         break;
                     default:
