@@ -1,17 +1,15 @@
-let board;
 let controller;
 
 function setup(){
     createCanvas(CONFIG.canvas.width, CONFIG.canvas.height);
-    board = new Board(CONFIG.cell.cellSize);
-    controller = new Controller(board);
+    controller = new Controller(new Board());
 }
 
 function draw() {
-    board.draw();
+    controller.tick();
 }
 
 function mousePressed(){
-    let clickedCell = board.getHoveredCell();
-    controller.setSignOnHoveredCell(clickedCell, 'x');
+    let clickedCell = controller.board.getHoveredCell();
+    controller.cellClick(clickedCell, 'x');
 }

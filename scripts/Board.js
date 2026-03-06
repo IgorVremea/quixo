@@ -1,7 +1,7 @@
 class Board{
-    constructor(cellSize){
-        this.cellSize = cellSize;
-        this.boardSize = cellSize*7;
+    constructor(){
+        this.cellSize = CONFIG.cell.cellSize;
+        this.boardSize = this.cellSize*7;
         this.board = [];
         this.boardInit();
         this.x = this.board[0][0].x;
@@ -11,16 +11,16 @@ class Board{
         let signTemp;
         let isActive;
         let typeTemp;
-        for(let y = 0; y<7; y++){
+        for(let x = 0; x<7; x++){
             let row = []
-            for(let x = 0; x<7; x++){
+            for(let y = 0; y<7; y++){
                 switch(CONFIG.board.boardScheme[y][x]){
                     case 'xo':
                         signTemp = '';
                         isActive = true;
                         typeTemp = CONFIG.cell.type.PIECE;
                         break;
-                    case '/':
+                    case 'E':
                         signTemp = '';
                         isActive = false;
                         typeTemp = CONFIG.cell.type.EDGE;
@@ -69,6 +69,13 @@ class Board{
             }
         }
         return null;
+    }
+    turnArrowsOff(){
+        for(let y=0; y<7; y++){
+            for(let x=0; x<7; x++){
+                if(this.board[x][y].type == CONFIG.cell.type.ARROW) this.board[x][y].isActive = false;
+            }
+        }
     }
     isCellOnEdge(x, y){
         if ((x != undefined && y != undefined) &&

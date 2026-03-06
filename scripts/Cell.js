@@ -9,7 +9,6 @@ class Cell {
         this.isActive = isActive;
         this.type = type;
     }
-
     draw(hoverState = CONFIG.cell.states.NORMAL){
         if(this.isActive == true){
             strokeWeight(5);
