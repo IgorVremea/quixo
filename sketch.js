@@ -11,5 +11,5 @@ function draw() {
 
 function mousePressed(){
     let clickedCell = controller.board.getHoveredCell();
-    controller.cellClick(clickedCell, 'x');
+    controller.cellClick(clickedCell);
 }
