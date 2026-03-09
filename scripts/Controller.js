@@ -23,7 +23,7 @@ class Controller {
                 this.board.board[0][cell.boardCoordY].isActive = cell.boardCoordX == 1 ? false : true;
                 this.board.board[6][cell.boardCoordY].isActive = cell.boardCoordX == 5 ? false : true;
         } else {
-
+            
         }
     }
     checkBtn(){
@@ -56,7 +56,7 @@ class Controller {
             && this.board.isCellOnEdge(cell.boardCoordX, cell.boardCoordY)
             && cell.type == CONFIG.cell.type.PIECE
             && !this.isInChangeBoardMode
-            && cell.sign == '') {
+            && (cell.sign == '' || cell.sign == this.currentSign)) {
                 this.isInChangeBoardMode = true;
                 this.isChangedState = true;
                 this.changeBoardMode(cell);
