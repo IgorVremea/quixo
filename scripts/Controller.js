@@ -4,7 +4,7 @@ class Controller {
         this.isInChangeBoardMode = false;
         this.isChangedState = false;
         this.activeCell = null;
-        this.currentPlayer = 'x';
+        this.currentSign = 'x';
     }
     tick(){
         this.checkBtn();
@@ -29,7 +29,7 @@ class Controller {
     checkBtn(){
         
     }
-    cellClick(cell, sign = this.currentPlayer){
+    cellClick(cell, sign = this.currentSign){
         if(cell.type == CONFIG.cell.type.ARROW && cell.isActive && this.activeCell != null){
             this.isInChangeBoardMode = false;
             this.board.turnArrowsOff();
@@ -50,7 +50,7 @@ class Controller {
             }
             this.board.completeLine(tempDir, this.activeCell);
             this.activeCell = null;
-            this.currentPlayer = this.currentPlayer == 'x' ? 'o' : 'x';
+            this.currentSign = this.currentSign == 'x' ? 'o' : 'x';
         }
         if(cell != null
             && this.board.isCellOnEdge(cell.boardCoordX, cell.boardCoordY)
