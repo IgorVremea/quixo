@@ -68,3 +68,22 @@ button:hover {
     transform: translateX(0);
   }
 }
+
+/* Formular nume jucători */
+#nameForm {
+  display: none;
+  margin-top: 20px;
+}
+
+input {
+  padding: 10px;
+  font-size: 1.2rem;
+  margin: 10px;
+  border-radius: 6px;
+  border: none;
+  text-align: center;
+}
+/* butonul de sus ascuns */
+#nameForm button {
+  margin-top: 10px;
+}

@@ -8,6 +8,22 @@
   </head>
   <body>
     <h1>Quixo</h1>
-    <button>Start New Game!</button>
+    <button id="startBtn" onclick="showForm()">Start New Game!</button>
+
+    <!-- Input pentru numele jucatorilor (2 jucatori) -->
+
+    <div id="nameForm">
+      <p>Introdu numele jucătorilor:</p>
+
+      <input type="text" id="player1" placeholder="Jucătorul 1" />
+      <br /><br />
+
+      <input type="text" id="player2" placeholder="Jucătorul 2" />
+      <br /><br />
+
+      <button onclick="startGame()">Start Game</button>
+    </div>
+
+    <script src="start.js"></script>
   </body>
 </html>
