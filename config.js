@@ -29,6 +29,12 @@ const CONFIG = {
             ['→',   'xo',   'xo',   'xo',   'xo',   'xo',   '←'],
             ['→',   'xo',   'xo',   'xo',   'xo',   'xo',   '←'],
             ['E',    '↑',    '↑',    '↑',    '↑',    '↑',    'E']
-        ]
+        ],
+        direction:{
+            DOWN:   0,
+            LEFT:   1,
+            UP:     2,
+            RIGHT:  3
+        }
     }
 };

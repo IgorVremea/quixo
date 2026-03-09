@@ -3,6 +3,8 @@ class Controller {
         this.board = board;
         this.isInChangeBoardMode = false;
         this.isChangedState = false;
+        this.activeCell = null;
+        this.currentPlayer = 'x';
     }
     tick(){
         this.checkBtn();
@@ -27,10 +29,28 @@ class Controller {
     checkBtn(){
         
     }
-    cellClick(cell, sign = null){
-        if(cell.type == CONFIG.cell.type.ARROW && cell.isActive){
+    cellClick(cell, sign = this.currentPlayer){
+        if(cell.type == CONFIG.cell.type.ARROW && cell.isActive && this.activeCell != null){
             this.isInChangeBoardMode = false;
             this.board.turnArrowsOff();
+            let tempDir;
+            switch(cell.sign){
+                case '↑':    // Altcode 24
+                    tempDir = CONFIG.board.direction.UP;
+                    break;
+                case '↓':    // Altcode 25
+                    tempDir = CONFIG.board.direction.DOWN;
+                    break;
+                case '→':    // Altcode 26
+                    tempDir = CONFIG.board.direction.RIGHT;
+                    break;
+                case '←':    // Altcode 27
+                    tempDir = CONFIG.board.direction.LEFT;
+                    break;
+            }
+            this.board.completeLine(tempDir, this.activeCell);
+            this.activeCell = null;
+            this.currentPlayer = this.currentPlayer == 'x' ? 'o' : 'x';
         }
         if(cell != null
             && this.board.isCellOnEdge(cell.boardCoordX, cell.boardCoordY)
@@ -42,6 +62,7 @@ class Controller {
                 this.changeBoardMode(cell);
                 if(sign == 'x' || sign == 'o'){
                     cell.sign = sign;
+                    this.activeCell = cell;
                 } else {
                     cell.sign = '';
                 }
