@@ -85,4 +85,35 @@ class Board{
                 return false
             }
     }
+    completeLine(direction, cell){
+        let tempSign=cell.sign;
+        switch(direction){
+            case CONFIG.board.direction.DOWN:
+                for(let i=cell.boardCoordY; i>1; i--){
+                    this.board[cell.boardCoordX][i].sign = this.board[cell.boardCoordX][i-1].sign
+                }
+                console.log(tempSign);
+                this.board[cell.boardCoordX][1].sign = tempSign;
+                break;
+            case CONFIG.board.direction.UP:
+                for(let i=cell.boardCoordY; i<5; i++){
+                    this.board[cell.boardCoordX][i].sign = this.board[cell.boardCoordX][i+1].sign
+                }
+                this.board[cell.boardCoordX][5].sign = tempSign;
+                break;
+            case CONFIG.board.direction.LEFT:
+                for(let i=cell.boardCoordX; i<5; i++){
+                    this.board[i][cell.boardCoordY].sign = this.board[i+1][cell.boardCoordY].sign
+                }
+                this.board[5][cell.boardCoordY].sign = tempSign;
+                break;
+            case CONFIG.board.direction.RIGHT:
+                for(let i=cell.boardCoordX; i>1; i--){
+                    this.board[i][cell.boardCoordY].sign = this.board[i-1][cell.boardCoordY].sign
+                }
+                this.board[1][cell.boardCoordY].sign = tempSign;
+                break;
+            default:
+        }
+    }
 }
