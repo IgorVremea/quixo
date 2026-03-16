@@ -1,5 +1,5 @@
 class Cell {
-    constructor(cellSize, x, y, boardCoordX = undefined, boardCoordY = undefined, sign = '', isActive = true, type = undefined){
+    constructor(cellSize, x, y, boardCoordX = undefined, boardCoordY = undefined, sign = '', isActive = true, type = undefined, handleClick = null){
         this.cellSize = cellSize;
         this.x = x;
         this.y = y;
@@ -8,15 +8,42 @@ class Cell {
         this.sign = sign;
         this.isActive = isActive;
         this.type = type;
+
+        this.button = createButton(`${this.sign}`);
+        this.button.position(this.x, this.y);
+        this.button.size(this.cellSize, this.cellSize);
+        this.button.addClass(`
+            bg-white
+            rounded-[10px]
+            border-4
+            border-[${CONFIG.canvas.bgColor}]
+            hover:border-[${CONFIG.cell.borderColorHover}]
+            text-[${this.cellSize/1.2}px]
+            leading-[${this.cellSize/1.2}px]
+            flex
+            justify-center
+            align-center
+            `);
+        // if(!isActive){
+        //     this.button.hide();
+        // }
+        if(this.type == CONFIG.cell.type.ARROW){
+            this.button.removeClass('bg-white');
+            this.button.addClass(`
+                text-white
+                bg-[${CONFIG.cell.borderColorHover}]
+                `);
+        }
+        this.button.mousePressed(handleClick);
     }
     draw(hoverState = CONFIG.cell.states.NORMAL){
-        if(this.isActive == true){
-            strokeWeight(5);
-            stroke(hoverState == CONFIG.cell.states.HOVER ? CONFIG.cell.borderColorHover : CONFIG.cell.borderColor);
-            fill( ['↑', '↓', '→', '←'].includes(this.sign) ? CONFIG.cell.bgColorArrow : CONFIG.cell.bgColor);
-            square(this.x, this.y, this.cellSize, 10);
-            this.drawSign(this.sign);
-        }
+        // if(this.isActive == true){
+        //     strokeWeight(5);
+        //     stroke(hoverState == CONFIG.cell.states.HOVER ? CONFIG.cell.borderColorHover : CONFIG.cell.borderColor);
+        //     fill( ['↑', '↓', '→', '←'].includes(this.sign) ? CONFIG.cell.bgColorArrow : CONFIG.cell.bgColor);
+        //     square(this.x, this.y, this.cellSize, 10);
+        //     this.drawSign(this.sign);
+        // }
     }
     drawSign(sign){
         this.sign = sign;
