@@ -7,6 +7,7 @@ function setup() {
 
 function draw() {
   controller.tick();
+  createUI();
 }
 
 function mousePressed() {
