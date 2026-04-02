@@ -1,4 +1,4 @@
-let score = 0;
+let score = 0; // seteaza initial scor la 0
 let scoreElement;
 
 let restartBtn = { x: 20, y: 60, w: 100, h: 40 };
@@ -11,10 +11,7 @@ function setup() {
 function draw() {
   background(30);
 
-  // seteaza initial scor la 0
-
   // 1. SCORUL
-  // createP - afiseaza text ca si <p></p>
   fill(255); // culoare albă
   textSize(24);
   text("Scor: " + score, 20, 40);
