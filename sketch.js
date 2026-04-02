@@ -3,10 +3,10 @@ let controller;
 function setup() {
   createCanvas(CONFIG.canvas.width, CONFIG.canvas.height);
   controller = new Controller(new Board());
-  createUI();
 }
 
 function draw() {
+  drawButton();
   controller.tick();
 }
 

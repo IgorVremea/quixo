@@ -4,13 +4,7 @@ let scoreElement;
 let restartBtn = { x: 20, y: 60, w: 100, h: 40 };
 let plusBtn = { x: 20, y: 120, w: 100, h: 40 };
 
-function setup() {
-  createCanvas(600, 400);
-}
-
-function draw() {
-  background(30);
-
+function drawButton() {
   // 1. SCORUL
   fill(255); // culoare albă
   textSize(24);
@@ -38,7 +32,7 @@ function draw() {
 // --- FUNCTII DE LOGICA ---
 
 // scrie scorul "Scor:"
-function mousePressed() {
+function mousePressedButton() {
   // click +1
   if (
     mouseX > plusBtn.x &&
