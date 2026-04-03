@@ -7,11 +7,11 @@ function setup() {
 
 function draw() {
   controller.tick();
-  UI.drawButton();
+  RB.drawButton();
 }
 
 function mousePressed() {
-  UI.mousePressedButton();
+  RB.mousePressedButton();
   let clickedCell = controller.board.getHoveredCell();
   controller.cellClick(clickedCell);
 }
