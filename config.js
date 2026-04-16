@@ -1,6 +1,6 @@
 const CONFIG = {
   canvas: {
-    width: 800,
+    width: 600,
     height: 600,
     bgColor: "#e2e8f0",
   },
