@@ -2,16 +2,16 @@
 RB = {
   score: 0, //setare initiala
   restartBtn: {
-    x: CONFIG.canvas.width / 30,
-    y: CONFIG.canvas.height / 10,
+    x: CONFIG.canvas.height / 30,
+    y: CONFIG.canvas.width / 10,
     w: CONFIG.canvas.width / 6,
     h: CONFIG.canvas.height / 15,
   },
   plusBtn: {
-    x: CONFIG.canvas.width / 30,
+    x: CONFIG.canvas.height / 30,
     y: CONFIG.canvas.width / 5,
     w: CONFIG.canvas.width / 6,
-    h: CONFIG.canvas.width / 15,
+    h: CONFIG.canvas.height / 15,
   },
 
   drawButton: function () {
