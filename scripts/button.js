@@ -2,16 +2,28 @@
 RB = {
   score: 0, //setare initiala
   restartBtn: {
+<<<<<<< HEAD
     x: CONFIG.canvas.height / 30,
     y: CONFIG.canvas.width / 10,
+=======
+    x: CONFIG.canvas.width / 30,
+    y: CONFIG.canvas.height / 10,
+>>>>>>> f40e413 (Numele jucatorilor)
     w: CONFIG.canvas.width / 6,
     h: CONFIG.canvas.height / 15,
   },
   plusBtn: {
+<<<<<<< HEAD
     x: CONFIG.canvas.height / 30,
     y: CONFIG.canvas.width / 5,
     w: CONFIG.canvas.width / 6,
     h: CONFIG.canvas.height / 15,
+=======
+    x: CONFIG.canvas.width / 30,
+    y: CONFIG.canvas.width / 5,
+    w: CONFIG.canvas.width / 6,
+    h: CONFIG.canvas.width / 15,
+>>>>>>> f40e413 (Numele jucatorilor)
   },
 
   drawButton: function () {
@@ -63,7 +75,11 @@ RB = {
     ) {
       RB.score = 0;
       if (controller) {
+<<<<<<< HEAD
         controller.board = new Board(); //eliberare tabla
+=======
+        controller.board = new Board(); //leiberare tabla
+>>>>>>> f40e413 (Numele jucatorilor)
         controller.isInChangeBoardMode = false; //sa nu creada controler ca e intr-o mutate
         controller.isChangedState = false;
         controller.activeCell = null;

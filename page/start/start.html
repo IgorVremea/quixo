@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ro">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <title>Quixo - Start</title>
+
+    <style>
+      /* animația shake */
+      @keyframes shake {
+        0% {
+          transform: translateX(0);
+        }
+        20% {
+          transform: translateX(-10px);
+        }
+        40% {
+          transform: translateX(10px);
+        }
+        60% {
+          transform: translateX(-10px);
+        }
+        80% {
+          transform: translateX(10px);
+        }
+        100% {
+          transform: translateX(0);
+        }
+      }
+
+      .shake {
+        animation: shake 0.6s ease;
+      }
+    </style>
+  </head>
+
+  <!-- Oberflow-hidden ascunde scrollbar  -->
+
+  <body
+    class="h-screen flex flex-col justify-center items-center text-center text-white font-bold bg-[radial-gradient(circle_at_bottom,#1e1e2f,#000000)] overflow-hidden"
+  >
+    <h1
+      class="text-[9rem] mb-[30px] text-[#deddd6] drop-shadow-[0_0_20px_rgba(255,0,212,0.8)] shake"
+    >
+      Quixo
+    </h1>
+
+    <!-- showForm() butonul de sus disparedupa ce este apasat , mb-4 spa'iu sub imput -->
+
+    <button
+      id="startBtn"
+      onclick="showForm()"
+      class="px-[40px] py-[15px] text-[1.5rem] bg-yellow-400 text-[#1e1e2f] font-bold rounded-lg transition duration-300 hover:scale-110 hover:bg-yellow-300"
+    >
+      Start New Game!
+    </button>
+
+    <!-- FORMULAR NUME -->
+
+    <div id="nameForm" class="hidden mt-[20px]">
+      <p class="mb-4 text-lg">Introdu numele jucătorilor:</p>
+
+      <!-- Element pe linie separata -->
+
+      <input
+        type="text"
+        id="player1"
+        placeholder="Jucătorul 1"
+        class="block mx-auto p-[10px] text-[1.2rem] rounded-md text-black text-center mb-4"
+      />
+
+      <input
+        type="text"
+        id="player2"
+        placeholder="Jucătorul 2"
+        class="block mx-auto p-[10px] text-[1.2rem] rounded-md text-black text-center mb-4"
+      />
+
+      <button
+        onclick="startGame()"
+        class="px-[40px] py-[15px] text-[1.5rem] bg-yellow-400 text-[#1e1e2f] font-bold rounded-lg transition duration-300 hover:scale-110 hover:bg-yellow-300"
+      >
+        Start Game
+      </button>
+    </div>
+
+    <script src="start.js"></script>
+  </body>
+</html>
