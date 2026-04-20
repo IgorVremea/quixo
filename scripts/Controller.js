@@ -5,13 +5,6 @@ class Controller {
         this.isChangedState = false;
         this.activeCell = null;
         this.currentSign = 'x';
-<<<<<<< HEAD
-    }
-    tick(){
-        this.checkBtn();
-        this.board.draw();
-    }
-=======
         this.players = {
             x: "Player X", 
             o: "Player O"
@@ -39,28 +32,18 @@ class Controller {
         30
     );
 }
->>>>>>> f40e413 (Numele jucatorilor)
     changeBoardMode(cell){
         if(cell != undefined &&
             this.isInChangeBoardMode
             && this.isChangedState
             && cell.type == CONFIG.cell.type.PIECE
             && this.board.isCellOnEdge(cell.boardCoordX, cell.boardCoordY)){
-<<<<<<< HEAD
-                this.isChangedState = false;
-                console.log(cell.boardCoordX + ' ' + cell.boardCoordY);
-                this.board.board[cell.boardCoordX][0].isActive = cell.boardCoordY == 1 ? false : true;
-                this.board.board[cell.boardCoordX][6].isActive = cell.boardCoordY == 5 ? false : true;
-                this.board.board[0][cell.boardCoordY].isActive = cell.boardCoordX == 1 ? false : true;
-                this.board.board[6][cell.boardCoordY].isActive = cell.boardCoordX == 5 ? false : true;
-=======
             this.isChangedState = false;
             console.log(cell.boardCoordX + ' ' + cell.boardCoordY);
             this.board.board[cell.boardCoordX][0].isActive = cell.boardCoordY == 1 ? false : true;
             this.board.board[cell.boardCoordX][6].isActive = cell.boardCoordY == 5 ? false : true;
             this.board.board[0][cell.boardCoordY].isActive = cell.boardCoordX == 1 ? false : true;
             this.board.board[6][cell.boardCoordY].isActive = cell.boardCoordX == 5 ? false : true;
->>>>>>> f40e413 (Numele jucatorilor)
         } else {
             
         }
@@ -69,10 +52,7 @@ class Controller {
         
     }
     cellClick(cell, sign = this.currentSign){
-<<<<<<< HEAD
-=======
         if (!cell) return;
->>>>>>> f40e413 (Numele jucatorilor)
         if(cell.type == CONFIG.cell.type.ARROW && cell.isActive && this.activeCell != null){
             this.isInChangeBoardMode = false;
             this.board.turnArrowsOff();
@@ -100,17 +80,6 @@ class Controller {
             && cell.type == CONFIG.cell.type.PIECE
             && !this.isInChangeBoardMode
             && (cell.sign == '' || cell.sign == this.currentSign)) {
-<<<<<<< HEAD
-                this.isInChangeBoardMode = true;
-                this.isChangedState = true;
-                this.changeBoardMode(cell);
-                if(sign == 'x' || sign == 'o'){
-                    cell.sign = sign;
-                    this.activeCell = cell;
-                } else {
-                    cell.sign = '';
-                }
-=======
             this.isInChangeBoardMode = true;
             this.isChangedState = true;
             this.changeBoardMode(cell);
@@ -120,7 +89,6 @@ class Controller {
             } else {
                 cell.sign = '';
             }
->>>>>>> f40e413 (Numele jucatorilor)
         }
     }
 
