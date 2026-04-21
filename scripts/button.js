@@ -18,7 +18,7 @@ RB = {
     // scor
     fill(0); //negru
     textSize(24);
-    text("Scor: " + RB.score, 70, CONFIG.canvas.height / 15);
+    text("Scor: " + RB.score, 30, CONFIG.canvas.height / 15);
 
     // buton restart
     fill(239, 68, 68);
