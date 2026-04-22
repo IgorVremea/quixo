@@ -63,7 +63,7 @@ RB = {
     ) {
       RB.score = 0;
       if (controller) {
-        controller.board = new Board(); //leiberare tabla
+        controller.board = new Board(); //eliberare tabla
         controller.isInChangeBoardMode = false; //sa nu creada controler ca e intr-o mutate
         controller.isChangedState = false;
         controller.activeCell = null;
