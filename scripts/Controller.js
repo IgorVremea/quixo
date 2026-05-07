@@ -1,6 +1,6 @@
 class Controller {
-  constructor(board) {
-    this.board = board;
+  constructor() {
+    this.board = new Board();
     this.isInChangeBoardMode = false;
     this.isChangedState = false;
     this.activeCell = null;
@@ -13,8 +13,7 @@ class Controller {
   getCurrentPlayerName() {
     return this.players[this.currentSign];
   }
-  tick() {
-    this.checkBtn();
+  tick() { // ce se întâmplă în fiecare „cadru” (fps)
     this.board.draw();
 
     textSize(20);
@@ -23,7 +22,7 @@ class Controller {
     fill(255);
     text("Rândul:", CONFIG.canvas.width / 2 - 160, 30);
 
-    let playerColor = this.currentSign === "x" ? "#3B82F6" : "#EC4899";
+    let playerColor = this.currentSign === "x" ? "#EC4899" : "#3B82F6";
     fill(playerColor);
     text(
       this.getCurrentPlayerName() + " (" + this.currentSign.toUpperCase() + ")",
@@ -31,7 +30,7 @@ class Controller {
       30,
     );
   }
-  changeBoardMode(cell) {
+  changeBoardMode(cell) { // intrăm în modul de schimbare a rândurilor (după selectarea celulei)
     if (
       cell != undefined &&
       this.isInChangeBoardMode &&
@@ -41,20 +40,17 @@ class Controller {
     ) {
       this.isChangedState = false;
       console.log(cell.boardCoordX + " " + cell.boardCoordY);
-      this.board.board[cell.boardCoordX][0].isActive =
-        cell.boardCoordY == 1 ? false : true;
-      this.board.board[cell.boardCoordX][6].isActive =
-        cell.boardCoordY == 5 ? false : true;
-      this.board.board[0][cell.boardCoordY].isActive =
-        cell.boardCoordX == 1 ? false : true;
-      this.board.board[6][cell.boardCoordY].isActive =
-        cell.boardCoordX == 5 ? false : true;
+      // activăm segețile doar necesare
+      this.board.board[cell.boardCoordX][0].isActive = cell.boardCoordY == 1 ? false : true;
+      this.board.board[cell.boardCoordX][6].isActive = cell.boardCoordY == 5 ? false : true;
+      this.board.board[0][cell.boardCoordY].isActive = cell.boardCoordX == 1 ? false : true;
+      this.board.board[6][cell.boardCoordY].isActive = cell.boardCoordX == 5 ? false : true;
     } else {
     }
   }
-  checkBtn() {}
-  cellClick(cell, sign = this.currentSign) {
+  cellClick(cell, sign = this.currentSign) { // acțiunea pentru alegerea celulei
     if (!cell) return;
+    // dacă e segeata
     if (
       cell.type == CONFIG.cell.type.ARROW &&
       cell.isActive &&
@@ -81,6 +77,7 @@ class Controller {
       this.activeCell = null;
       this.currentSign = this.currentSign == "x" ? "o" : "x";
     }
+    // dacă e piesă
     if (
       cell != null &&
       this.board.isCellOnEdge(cell.boardCoordX, cell.boardCoordY) &&

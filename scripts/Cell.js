@@ -9,7 +9,7 @@ class Cell {
         this.isActive = isActive;
         this.type = type;
     }
-    draw(hoverState = CONFIG.cell.states.NORMAL){
+    draw(hoverState = CONFIG.cell.states.NORMAL){ // deseneaza celula
         if(this.isActive == true){
             strokeWeight(5);
             stroke(hoverState == CONFIG.cell.states.HOVER ? CONFIG.cell.borderColorHover : CONFIG.cell.borderColor);
@@ -18,7 +18,7 @@ class Cell {
             this.drawSign(this.sign);
         }
     }
-    drawSign(sign){
+    drawSign(sign){ // desenează în celula semnul ei
         this.sign = sign;
         noStroke();
         textAlign(CENTER, CENTER);
@@ -46,7 +46,7 @@ class Cell {
                 
         }
     }
-    isHover(mX, mY){
+    isHover(mX, mY){ // verificarea dacă celula este aleasă cu mouse
         if(mX >= this.x &&
             mX <= this.x + this.cellSize &&
             mY >= this.y &&

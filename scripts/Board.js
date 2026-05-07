@@ -1,5 +1,6 @@
 class Board{
     constructor(){
+        // initializarea atributelor
         this.cellSize = CONFIG.cell.cellSize;
         this.boardSize = this.cellSize*7;
         this.board = [];
@@ -8,6 +9,7 @@ class Board{
         this.y = this.board[0][0].y;
     }
     boardInit(){
+        // initializarea matrixului board-ului din CONFIG
         let signTemp;
         let isActive;
         let typeTemp;
@@ -50,17 +52,17 @@ class Board{
         for(let y = 0; y<7; y++){                                       // Desenez teren
             for(let x = 0; x<7; x++){
                 this.board[x][y].draw();
-                if(this.board[x][y].isHover(mouseX, mouseY)) {
+                if(this.board[x][y].isHover(mouseX, mouseY)) { // verific dacă vre-un cell e selectat
                     hoverX = x;
                     hoverY = y;
                 }
             }
         }
-        if(this.isCellOnEdge(hoverX, hoverY)) {
+        if(this.isCellOnEdge(hoverX, hoverY)) { // redesenez celula selectată (cu border) doar dacă e pe marginea
                 this.board[hoverX][hoverY].draw(CONFIG.cell.states.HOVER); 
             }
     }
-    getHoveredCell(){
+    getHoveredCell(){ // verificarea de hover
         for(let y = 0; y<7; y++){
             for(let x = 0; x<7; x++){
                 if(this.board[x][y].isHover(mouseX, mouseY)) {
@@ -70,14 +72,14 @@ class Board{
         }
         return null;
     }
-    turnArrowsOff(){
+    turnArrowsOff(){ // deactivez butoane- segeți
         for(let y=0; y<7; y++){
             for(let x=0; x<7; x++){
                 if(this.board[x][y].type == CONFIG.cell.type.ARROW) this.board[x][y].isActive = false;
             }
         }
     }
-    isCellOnEdge(x, y){
+    isCellOnEdge(x, y){ // verificarea dacă celula este pe marginea bordului 
         if ((x != undefined && y != undefined) &&
             (x <= 1 ||  x >= 5 || y <= 1 || y >= 5)){
                 return true;
@@ -85,7 +87,7 @@ class Board{
                 return false
             }
     }
-    completeLine(direction, cell){
+    completeLine(direction, cell){ // restructurizare liniei după mutarea piesei
         let tempSign=cell.sign;
         switch(direction){
             case CONFIG.board.direction.DOWN:

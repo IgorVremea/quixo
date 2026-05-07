@@ -1,11 +1,11 @@
 const CONFIG = {
   canvas: {
-    width: 600,
-    height: 600,
-    bgColor: "#e2e8f0",
+    get width() { return document.getElementById('game-div').offsetWidth },
+    get height() { return CONFIG.canvas.width },
+    get bgColor() { return window.getComputedStyle(document.querySelector('body')).backgroundColor },
   },
   cell: {
-    cellSize: 60,
+    get cellSize() { return CONFIG.canvas.width/9 },
     bgColor: "#FFF",
     bgColorArrow: "#000",
     get borderColor() {
