@@ -1,6 +1,5 @@
 class Board {
   constructor() {
-    // initializarea atributelor
     this.cellSize = CONFIG.cell.cellSize;
     this.boardSize = this.cellSize * 7;
     this.board = [];
@@ -9,7 +8,6 @@ class Board {
     this.y = this.board[0][0].y;
   }
   boardInit() {
-    // initializarea matrixului board-ului din CONFIG
     let signTemp;
     let isActive;
     let typeTemp;
@@ -65,19 +63,16 @@ class Board {
       for (let x = 0; x < 7; x++) {
         this.board[x][y].draw();
         if (this.board[x][y].isHover(mouseX, mouseY)) {
-          // verific dacă vre-un cell e selectat
           hoverX = x;
           hoverY = y;
         }
       }
     }
     if (this.isCellOnEdge(hoverX, hoverY)) {
-      // redesenez celula selectată (cu border) doar dacă e pe marginea
       this.board[hoverX][hoverY].draw(CONFIG.cell.states.HOVER);
     }
   }
   getHoveredCell() {
-    // verificarea de hover
     for (let y = 0; y < 7; y++) {
       for (let x = 0; x < 7; x++) {
         if (this.board[x][y].isHover(mouseX, mouseY)) {
@@ -88,7 +83,6 @@ class Board {
     return null;
   }
   turnArrowsOff() {
-    // deactivez butoane- segeți
     for (let y = 0; y < 7; y++) {
       for (let x = 0; x < 7; x++) {
         if (this.board[x][y].type == CONFIG.cell.type.ARROW)
@@ -97,7 +91,6 @@ class Board {
     }
   }
   isCellOnEdge(x, y) {
-    // verificarea dacă celula este pe marginea bordului
     if (
       x != undefined &&
       y != undefined &&
@@ -109,7 +102,6 @@ class Board {
     }
   }
   completeLine(direction, cell) {
-    // restructurizare liniei după mutarea piesei
     let tempSign = cell.sign;
     switch (direction) {
       case CONFIG.board.direction.DOWN:
