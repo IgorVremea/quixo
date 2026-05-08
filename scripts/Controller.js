@@ -1,36 +1,78 @@
 class Controller {
+<<<<<<< HEAD
   constructor() {
     this.board = new Board();
+=======
+  constructor(board) {
+    this.board = board;
+
+>>>>>>> scor
     this.isInChangeBoardMode = false;
     this.isChangedState = false;
+
     this.activeCell = null;
+
     this.currentSign = "x";
+
     this.players = {
       x: "Player 1",
       o: "Player 2",
     };
   }
+
   getCurrentPlayerName() {
     return this.players[this.currentSign];
   }
+<<<<<<< HEAD
   tick() { // ce se întâmplă în fiecare „cadru” (fps)
+=======
+
+  // adaugă punct câștigătorului
+  addPointToWinner(sign) {
+    RB.scores[sign]++;
+  }
+
+  // evidențiere casete câștigătoare
+  highlightWinningCells(cells) {
+    for (let cell of cells) {
+      cell.isWinner = true;
+    }
+  }
+
+  tick() {
+    this.checkBtn();
+
+>>>>>>> scor
     this.board.draw();
 
     textSize(20);
+
     textAlign(LEFT, CENTER);
 
     fill(255);
+
     text("Rândul:", CONFIG.canvas.width / 2 - 160, 30);
 
+<<<<<<< HEAD
     let playerColor = this.currentSign === "x" ? "#EC4899" : "#3B82F6";
+=======
+    let playerColor = this.currentSign === "x" ? "#3B82F6" : "#EC4899";
+
+>>>>>>> scor
     fill(playerColor);
+
     text(
       this.getCurrentPlayerName() + " (" + this.currentSign.toUpperCase() + ")",
       CONFIG.canvas.width / 2 - 80,
       30,
     );
   }
+<<<<<<< HEAD
   changeBoardMode(cell) { // intrăm în modul de schimbare a rândurilor (după selectarea celulei)
+=======
+
+  changeBoardMode(cell) {
+>>>>>>> scor
     if (
       cell != undefined &&
       this.isInChangeBoardMode &&
@@ -39,6 +81,7 @@ class Controller {
       this.board.isCellOnEdge(cell.boardCoordX, cell.boardCoordY)
     ) {
       this.isChangedState = false;
+<<<<<<< HEAD
       console.log(cell.boardCoordX + " " + cell.boardCoordY);
       // activăm segețile doar necesare
       this.board.board[cell.boardCoordX][0].isActive = cell.boardCoordY == 1 ? false : true;
@@ -51,33 +94,213 @@ class Controller {
   cellClick(cell, sign = this.currentSign) { // acțiunea pentru alegerea celulei
     if (!cell) return;
     // dacă e segeata
+=======
+
+      this.board.board[cell.boardCoordX][0].isActive =
+        cell.boardCoordY == 1 ? false : true;
+
+      this.board.board[cell.boardCoordX][6].isActive =
+        cell.boardCoordY == 5 ? false : true;
+
+      this.board.board[0][cell.boardCoordY].isActive =
+        cell.boardCoordX == 1 ? false : true;
+
+      this.board.board[6][cell.boardCoordY].isActive =
+        cell.boardCoordX == 5 ? false : true;
+    }
+  }
+
+  checkBtn() {}
+
+  // verificare câștigător
+  checkWinner() {
+    let b = this.board.board;
+
+    // linii
+    for (let y = 1; y <= 5; y++) {
+      let first = b[1][y].sign;
+
+      if (first === "") continue;
+
+      let win = true;
+
+      for (let x = 2; x <= 5; x++) {
+        if (b[x][y].sign !== first) {
+          win = false;
+          break;
+        }
+      }
+
+      if (win) {
+        let winningCells = [];
+
+        for (let x = 1; x <= 5; x++) {
+          winningCells.push(b[x][y]);
+        }
+
+        this.highlightWinningCells(winningCells);
+
+        return first;
+      }
+    }
+
+    // coloane
+    for (let x = 1; x <= 5; x++) {
+      let first = b[x][1].sign;
+
+      if (first === "") continue;
+
+      let win = true;
+
+      for (let y = 2; y <= 5; y++) {
+        if (b[x][y].sign !== first) {
+          win = false;
+          break;
+        }
+      }
+
+      if (win) {
+        let winningCells = [];
+
+        for (let y = 1; y <= 5; y++) {
+          winningCells.push(b[x][y]);
+        }
+
+        this.highlightWinningCells(winningCells);
+
+        return first;
+      }
+    }
+
+    // diagonala principală
+    let firstDiag = b[1][1].sign;
+
+    if (firstDiag !== "") {
+      let win = true;
+
+      for (let i = 2; i <= 5; i++) {
+        if (b[i][i].sign !== firstDiag) {
+          win = false;
+          break;
+        }
+      }
+
+      if (win) {
+        let winningCells = [];
+
+        for (let i = 1; i <= 5; i++) {
+          winningCells.push(b[i][i]);
+        }
+
+        this.highlightWinningCells(winningCells);
+
+        return firstDiag;
+      }
+    }
+
+    // diagonala secundară
+    let secondDiag = b[5][1].sign;
+
+    if (secondDiag !== "") {
+      let win = true;
+
+      for (let i = 1; i <= 5; i++) {
+        if (b[6 - i][i].sign !== secondDiag) {
+          win = false;
+          break;
+        }
+      }
+
+      if (win) {
+        let winningCells = [];
+
+        for (let i = 1; i <= 5; i++) {
+          winningCells.push(b[6 - i][i]);
+        }
+
+        this.highlightWinningCells(winningCells);
+
+        return secondDiag;
+      }
+    }
+
+    return null;
+  }
+
+  // reset tablă
+  resetGameBoard() {
+    this.board = new Board();
+
+    this.isInChangeBoardMode = false;
+    this.isChangedState = false;
+
+    this.activeCell = null;
+
+    this.currentSign = "x";
+  }
+
+  cellClick(cell, sign = this.currentSign) {
+    if (!cell) return;
+
+    // click pe săgeată
+>>>>>>> scor
     if (
       cell.type == CONFIG.cell.type.ARROW &&
       cell.isActive &&
       this.activeCell != null
     ) {
       this.isInChangeBoardMode = false;
+
       this.board.turnArrowsOff();
+
       let tempDir;
+
       switch (cell.sign) {
-        case "↑": // Altcode 24
+        case "↑":
           tempDir = CONFIG.board.direction.UP;
           break;
-        case "↓": // Altcode 25
+
+        case "↓":
           tempDir = CONFIG.board.direction.DOWN;
           break;
-        case "→": // Altcode 26
+
+        case "→":
           tempDir = CONFIG.board.direction.RIGHT;
           break;
-        case "←": // Altcode 27
+
+        case "←":
           tempDir = CONFIG.board.direction.LEFT;
           break;
       }
+
       this.board.completeLine(tempDir, this.activeCell);
+
       this.activeCell = null;
+
+      // verificare câștigător
+      let winner = this.checkWinner();
+
+      if (winner) {
+        this.addPointToWinner(winner);
+
+        setTimeout(() => {
+          alert(this.players[winner] + " a câștigat!");
+
+          this.resetGameBoard();
+        }, 500);
+
+        return;
+      }
+
+      // schimbare tură
       this.currentSign = this.currentSign == "x" ? "o" : "x";
     }
+<<<<<<< HEAD
     // dacă e piesă
+=======
+
+    // selectare piesă
+>>>>>>> scor
     if (
       cell != null &&
       this.board.isCellOnEdge(cell.boardCoordX, cell.boardCoordY) &&
@@ -86,10 +309,14 @@ class Controller {
       (cell.sign == "" || cell.sign == this.currentSign)
     ) {
       this.isInChangeBoardMode = true;
+
       this.isChangedState = true;
+
       this.changeBoardMode(cell);
+
       if (sign == "x" || sign == "o") {
         cell.sign = sign;
+
         this.activeCell = cell;
       } else {
         cell.sign = "";
