@@ -77,7 +77,6 @@ class Cell {
         text(sign, cx, cy);
         break;
     }
-<<<<<<< HEAD
     draw(hoverState = CONFIG.cell.states.NORMAL){ // deseneaza celula
         if(this.isActive == true){
             strokeWeight(5);
@@ -128,16 +127,3 @@ class Cell {
         }
     }
 }
-=======
-  }
-
-  isHover(mX, mY) {
-    return (
-      mX >= this.x &&
-      mX <= this.x + this.cellSize &&
-      mY >= this.y &&
-      mY <= this.y + this.cellSize
-    );
-  }
-}
->>>>>>> scor
