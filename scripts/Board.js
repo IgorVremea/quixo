@@ -1,121 +1,147 @@
-class Board{
-    constructor(){
-        // initializarea atributelor
-        this.cellSize = CONFIG.cell.cellSize;
-        this.boardSize = this.cellSize*7;
-        this.board = [];
-        this.boardInit();
-        this.x = this.board[0][0].x;
-        this.y = this.board[0][0].y;
-    }
-    boardInit(){
-        // initializarea matrixului board-ului din CONFIG
-        let signTemp;
-        let isActive;
-        let typeTemp;
-        for(let x = 0; x<7; x++){
-            let row = []
-            for(let y = 0; y<7; y++){
-                switch(CONFIG.board.boardScheme[y][x]){
-                    case 'xo':
-                        signTemp = '';
-                        isActive = true;
-                        typeTemp = CONFIG.cell.type.PIECE;
-                        break;
-                    case 'E':
-                        signTemp = '';
-                        isActive = false;
-                        typeTemp = CONFIG.cell.type.EDGE;
-                        break;
-                    case '↑':    // Altcode 24
-                    case '↓':    // Altcode 25
-                    case '→':    // Altcode 26
-                    case '←':    // Altcode 27
-                        signTemp = CONFIG.board.boardScheme[y][x];
-                        isActive = false;
-                        typeTemp = CONFIG.cell.type.ARROW;
-                        break;
-                    default:
-                        signTemp = '';
-                        isActive = false;
-                        typeTemp = undefined;                        
-                }
-                row.push( new Cell(this.cellSize, (CONFIG.canvas.width-this.boardSize)/2+this.cellSize*x, (CONFIG.canvas.height-this.boardSize)/2+this.cellSize*y, x, y, signTemp, isActive, typeTemp) );
-            }
-            this.board.push(row);
+class Board {
+  constructor() {
+    // initializarea atributelor
+    this.cellSize = CONFIG.cell.cellSize;
+    this.boardSize = this.cellSize * 7;
+    this.board = [];
+    this.boardInit();
+    this.x = this.board[0][0].x;
+    this.y = this.board[0][0].y;
+  }
+  boardInit() {
+    // initializarea matrixului board-ului din CONFIG
+    let signTemp;
+    let isActive;
+    let typeTemp;
+    for (let x = 0; x < 7; x++) {
+      let row = [];
+      for (let y = 0; y < 7; y++) {
+        switch (CONFIG.board.boardScheme[y][x]) {
+          case "xo":
+            signTemp = "";
+            isActive = true;
+            typeTemp = CONFIG.cell.type.PIECE;
+            break;
+          case "E":
+            signTemp = "";
+            isActive = false;
+            typeTemp = CONFIG.cell.type.EDGE;
+            break;
+          case "↑": // Altcode 24
+          case "↓": // Altcode 25
+          case "→": // Altcode 26
+          case "←": // Altcode 27
+            signTemp = CONFIG.board.boardScheme[y][x];
+            isActive = false;
+            typeTemp = CONFIG.cell.type.ARROW;
+            break;
+          default:
+            signTemp = "";
+            isActive = false;
+            typeTemp = undefined;
         }
+        row.push(
+          new Cell(
+            this.cellSize,
+            (CONFIG.canvas.width - this.boardSize) / 2 + this.cellSize * x,
+            (CONFIG.canvas.height - this.boardSize) / 2 + this.cellSize * y,
+            x,
+            y,
+            signTemp,
+            isActive,
+            typeTemp,
+          ),
+        );
+      }
+      this.board.push(row);
     }
-    draw(){
-        background(CONFIG.canvas.bgColor);
-        let hoverX;
-        let hoverY;
-        for(let y = 0; y<7; y++){                                       // Desenez teren
-            for(let x = 0; x<7; x++){
-                this.board[x][y].draw();
-                if(this.board[x][y].isHover(mouseX, mouseY)) { // verific dacă vre-un cell e selectat
-                    hoverX = x;
-                    hoverY = y;
-                }
-            }
+  }
+  draw() {
+    background(CONFIG.canvas.bgColor);
+    let hoverX;
+    let hoverY;
+    for (let y = 0; y < 7; y++) {
+      // Desenez teren
+      for (let x = 0; x < 7; x++) {
+        this.board[x][y].draw();
+        if (this.board[x][y].isHover(mouseX, mouseY)) {
+          // verific dacă vre-un cell e selectat
+          hoverX = x;
+          hoverY = y;
         }
-        if(this.isCellOnEdge(hoverX, hoverY)) { // redesenez celula selectată (cu border) doar dacă e pe marginea
-                this.board[hoverX][hoverY].draw(CONFIG.cell.states.HOVER); 
-            }
+      }
     }
-    getHoveredCell(){ // verificarea de hover
-        for(let y = 0; y<7; y++){
-            for(let x = 0; x<7; x++){
-                if(this.board[x][y].isHover(mouseX, mouseY)) {
-                    return this.board[x][y];
-                }
-            }
+    if (this.isCellOnEdge(hoverX, hoverY)) {
+      // redesenez celula selectată (cu border) doar dacă e pe marginea
+      this.board[hoverX][hoverY].draw(CONFIG.cell.states.HOVER);
+    }
+  }
+  getHoveredCell() {
+    // verificarea de hover
+    for (let y = 0; y < 7; y++) {
+      for (let x = 0; x < 7; x++) {
+        if (this.board[x][y].isHover(mouseX, mouseY)) {
+          return this.board[x][y];
         }
-        return null;
+      }
     }
-    turnArrowsOff(){ // deactivez butoane- segeți
-        for(let y=0; y<7; y++){
-            for(let x=0; x<7; x++){
-                if(this.board[x][y].type == CONFIG.cell.type.ARROW) this.board[x][y].isActive = false;
-            }
+    return null;
+  }
+  turnArrowsOff() {
+    // deactivez butoane- segeți
+    for (let y = 0; y < 7; y++) {
+      for (let x = 0; x < 7; x++) {
+        if (this.board[x][y].type == CONFIG.cell.type.ARROW)
+          this.board[x][y].isActive = false;
+      }
+    }
+  }
+  isCellOnEdge(x, y) {
+    // verificarea dacă celula este pe marginea bordului
+    if (
+      x != undefined &&
+      y != undefined &&
+      (x <= 1 || x >= 5 || y <= 1 || y >= 5)
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  completeLine(direction, cell) {
+    // restructurizare liniei după mutarea piesei
+    let tempSign = cell.sign;
+    switch (direction) {
+      case CONFIG.board.direction.DOWN:
+        for (let i = cell.boardCoordY; i > 1; i--) {
+          this.board[cell.boardCoordX][i].sign =
+            this.board[cell.boardCoordX][i - 1].sign;
         }
-    }
-    isCellOnEdge(x, y){ // verificarea dacă celula este pe marginea bordului 
-        if ((x != undefined && y != undefined) &&
-            (x <= 1 ||  x >= 5 || y <= 1 || y >= 5)){
-                return true;
-            } else {
-                return false
-            }
-    }
-    completeLine(direction, cell){ // restructurizare liniei după mutarea piesei
-        let tempSign=cell.sign;
-        switch(direction){
-            case CONFIG.board.direction.DOWN:
-                for(let i=cell.boardCoordY; i>1; i--){
-                    this.board[cell.boardCoordX][i].sign = this.board[cell.boardCoordX][i-1].sign
-                }
-                console.log(tempSign);
-                this.board[cell.boardCoordX][1].sign = tempSign;
-                break;
-            case CONFIG.board.direction.UP:
-                for(let i=cell.boardCoordY; i<5; i++){
-                    this.board[cell.boardCoordX][i].sign = this.board[cell.boardCoordX][i+1].sign
-                }
-                this.board[cell.boardCoordX][5].sign = tempSign;
-                break;
-            case CONFIG.board.direction.LEFT:
-                for(let i=cell.boardCoordX; i<5; i++){
-                    this.board[i][cell.boardCoordY].sign = this.board[i+1][cell.boardCoordY].sign
-                }
-                this.board[5][cell.boardCoordY].sign = tempSign;
-                break;
-            case CONFIG.board.direction.RIGHT:
-                for(let i=cell.boardCoordX; i>1; i--){
-                    this.board[i][cell.boardCoordY].sign = this.board[i-1][cell.boardCoordY].sign
-                }
-                this.board[1][cell.boardCoordY].sign = tempSign;
-                break;
-            default:
+        console.log(tempSign);
+        this.board[cell.boardCoordX][1].sign = tempSign;
+        break;
+      case CONFIG.board.direction.UP:
+        for (let i = cell.boardCoordY; i < 5; i++) {
+          this.board[cell.boardCoordX][i].sign =
+            this.board[cell.boardCoordX][i + 1].sign;
         }
+        this.board[cell.boardCoordX][5].sign = tempSign;
+        break;
+      case CONFIG.board.direction.LEFT:
+        for (let i = cell.boardCoordX; i < 5; i++) {
+          this.board[i][cell.boardCoordY].sign =
+            this.board[i + 1][cell.boardCoordY].sign;
+        }
+        this.board[5][cell.boardCoordY].sign = tempSign;
+        break;
+      case CONFIG.board.direction.RIGHT:
+        for (let i = cell.boardCoordX; i > 1; i--) {
+          this.board[i][cell.boardCoordY].sign =
+            this.board[i - 1][cell.boardCoordY].sign;
+        }
+        this.board[1][cell.boardCoordY].sign = tempSign;
+        break;
+      default:
     }
+  }
 }

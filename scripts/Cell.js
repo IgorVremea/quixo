@@ -77,54 +77,14 @@ class Cell {
         text(sign, cx, cy);
         break;
     }
-    draw(hoverState = CONFIG.cell.states.NORMAL){ // deseneaza celula
-        if(this.isActive == true){
-            strokeWeight(5);
-            stroke(hoverState == CONFIG.cell.states.HOVER ? CONFIG.cell.borderColorHover : CONFIG.cell.borderColor);
-            fill( ['↑', '↓', '→', '←'].includes(this.sign) ? CONFIG.cell.bgColorArrow : CONFIG.cell.bgColor);
-            square(this.x, this.y, this.cellSize, 10);
-            this.drawSign(this.sign);
-        }
-    }
-    drawSign(sign){ // desenează în celula semnul ei
-        this.sign = sign;
-        noStroke();
-        textAlign(CENTER, CENTER);
-        textSize(CONFIG.cell.cellSize/1.5);
-        switch(sign){
-            case 'x':
-                fill('#F00');
-                text('x', (this.x + this.cellSize/2), (this.y + this.cellSize/2));
-                break;
-            case 'o':
-                fill('#00F');
-                text('o', (this.x + this.cellSize/2), (this.y + this.cellSize/2));
-                break;
-            case '↑':    // Altcode 24
-            case '↓':    // Altcode 25
-            case '→':    // Altcode 26
-            case '←':    // Altcode 27
-                fill('#FFF');
-                text(sign, (this.x + this.cellSize/2), (this.y + this.cellSize/2));
-                break;
-            default:
-                fill('rgb(135, 11, 133)');
-                text(sign, (this.x + this.cellSize/2), (this.y + this.cellSize/2));
-                break;
-                
-        }
-    }
-    isHover(mX, mY){ // verificarea dacă celula este aleasă cu mouse
-        if(mX >= this.x &&
-            mX <= this.x + this.cellSize &&
-            mY >= this.y &&
-            mY <= this.y + this.cellSize
-        ) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-}
+  }
+
+  isHover(mX, mY) {
+    return (
+      mX >= this.x &&
+      mX <= this.x + this.cellSize &&
+      mY >= this.y &&
+      mY <= this.y + this.cellSize
+    );
+  }
 }
