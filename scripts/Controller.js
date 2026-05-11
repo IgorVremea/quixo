@@ -35,9 +35,11 @@ class Controller {
 
   tick() {
     this.checkBtn();
-
     this.board.draw();
+    this.drawWinner();
+  }
 
+  drawWinner() {
     // text tură
     textSize(20);
 
@@ -63,7 +65,7 @@ class Controller {
       let boxHeight = 100;
 
       let x = CONFIG.canvas.width / 2 - boxWidth / 2;
-      let y = CONFIG.canvas.height / 2 - boxHeight / 2;
+      let y = CONFIG.canvas.height / 2 - boxHeight / 2 + 220;
 
       // fundal alb
       fill(255, 255, 255, 220);
@@ -83,7 +85,11 @@ class Controller {
 
       noStroke();
 
-      text(this.winnerText, CONFIG.canvas.width / 2, CONFIG.canvas.height / 2);
+      text(
+        this.winnerText,
+        CONFIG.canvas.width / 2,
+        CONFIG.canvas.height / 2 + 220,
+      );
     }
   }
 
@@ -214,7 +220,7 @@ class Controller {
   async showWinner(winner) {
     this.winnerText = this.players[winner] + " a câștigat!";
 
-    await this.delay(2000);
+    await this.delay(5000);
 
     this.resetGameBoard();
   }
