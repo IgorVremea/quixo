@@ -9,10 +9,19 @@ class Controller {
 
     this.currentSign = "x";
 
+    this.winnerText = "";
+
     this.players = {
       x: "Player 1",
       o: "Player 2",
     };
+  }
+
+  // delay cu Promise
+  delay(ms) {
+    return new Promise((resolve) => {
+      setTimeout(resolve, ms);
+    });
   }
 
   getCurrentPlayerName() {
@@ -24,18 +33,12 @@ class Controller {
     RB.scores[sign]++;
   }
 
-  // evidențiere casete câștigătoare
-  highlightWinningCells(cells) {
-    for (let cell of cells) {
-      cell.isWinner = true;
-    }
-  }
-
   tick() {
     this.checkBtn();
 
     this.board.draw();
 
+    // text tură
     textSize(20);
 
     textAlign(LEFT, CENTER);
@@ -53,6 +56,35 @@ class Controller {
       CONFIG.canvas.width / 2 - 80,
       30,
     );
+
+    // afișare câștigător
+    if (this.winnerText !== "") {
+      let boxWidth = 420;
+      let boxHeight = 100;
+
+      let x = CONFIG.canvas.width / 2 - boxWidth / 2;
+      let y = CONFIG.canvas.height / 2 - boxHeight / 2;
+
+      // fundal alb
+      fill(255, 255, 255, 220);
+
+      stroke("#fdfffe"); // contur
+
+      strokeWeight(4);
+
+      rect(x, y, boxWidth, boxHeight, 20);
+
+      // text
+      textAlign(CENTER, CENTER);
+
+      textSize(42);
+
+      fill("#000000");
+
+      noStroke();
+
+      text(this.winnerText, CONFIG.canvas.width / 2, CONFIG.canvas.height / 2);
+    }
   }
 
   changeBoardMode(cell) {
@@ -81,7 +113,7 @@ class Controller {
 
   checkBtn() {}
 
-  // verificare câștigător
+  // verificare câștigător - verificare toate variantele posibile de castig
   checkWinner() {
     let b = this.board.board;
 
@@ -101,14 +133,6 @@ class Controller {
       }
 
       if (win) {
-        let winningCells = [];
-
-        for (let x = 1; x <= 5; x++) {
-          winningCells.push(b[x][y]);
-        }
-
-        this.highlightWinningCells(winningCells);
-
         return first;
       }
     }
@@ -129,14 +153,6 @@ class Controller {
       }
 
       if (win) {
-        let winningCells = [];
-
-        for (let y = 1; y <= 5; y++) {
-          winningCells.push(b[x][y]);
-        }
-
-        this.highlightWinningCells(winningCells);
-
         return first;
       }
     }
@@ -155,14 +171,6 @@ class Controller {
       }
 
       if (win) {
-        let winningCells = [];
-
-        for (let i = 1; i <= 5; i++) {
-          winningCells.push(b[i][i]);
-        }
-
-        this.highlightWinningCells(winningCells);
-
         return firstDiag;
       }
     }
@@ -181,14 +189,6 @@ class Controller {
       }
 
       if (win) {
-        let winningCells = [];
-
-        for (let i = 1; i <= 5; i++) {
-          winningCells.push(b[6 - i][i]);
-        }
-
-        this.highlightWinningCells(winningCells);
-
         return secondDiag;
       }
     }
@@ -206,9 +206,20 @@ class Controller {
     this.activeCell = null;
 
     this.currentSign = "x";
+
+    this.winnerText = "";
   }
 
-  cellClick(cell, sign = this.currentSign) {
+  // afișare câștigător pe ecran
+  async showWinner(winner) {
+    this.winnerText = this.players[winner] + " a câștigat!";
+
+    await this.delay(2000);
+
+    this.resetGameBoard();
+  }
+
+  async cellClick(cell, sign = this.currentSign) {
     if (!cell) return;
 
     // click pe săgeată
@@ -251,11 +262,7 @@ class Controller {
       if (winner) {
         this.addPointToWinner(winner);
 
-        setTimeout(() => {
-          alert(this.players[winner] + " a câștigat!");
-
-          this.resetGameBoard();
-        }, 500);
+        await this.showWinner(winner);
 
         return;
       }
