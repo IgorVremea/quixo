@@ -1,6 +1,6 @@
 class Controller {
-  constructor(board) {
-    this.board = board;
+  constructor() {
+    this.board = new Board();
 
     this.isInChangeBoardMode = false;
     this.isChangedState = false;
