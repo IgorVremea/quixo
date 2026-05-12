@@ -16,7 +16,28 @@ class Controller {
       o: "Player 2",
     };
   }
+  showFormBtnHanddle() {
+    // Ascunde butonul de sus
+    document.getElementById("startBtn").classList.add("hidden");
+    // Arată formularul cu nume
+    document.getElementById("nameForm").classList.remove("hidden");
+  }
 
+  startGameBtnHanddle(){
+    let pX = document.getElementById("playerX").value;
+    let pO = document.getElementById("playerO").value;
+
+    if (pX === "" || pO === "") {
+        alert("Introdu numele ambilor jucători!");
+        return;
+    }
+
+    this.players.x = pX;
+    this.players.o = pO;
+    
+    document.getElementById("start-section").classList.add("hidden");
+    document.getElementById("game-div").classList.remove("hidden");
+  }
   // delay cu Promise
   delay(ms) {
     return new Promise((resolve) => {

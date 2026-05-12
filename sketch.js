@@ -4,6 +4,7 @@ function setup() {
   let canvas = createCanvas(CONFIG.canvas.width, CONFIG.canvas.height);
   canvas.parent('game-div');
   controller = new Controller();
+  document.getElementById("game-div").classList.add("hidden");
 }
 
 function draw() {
