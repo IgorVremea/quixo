@@ -247,6 +247,9 @@ class Controller {
   }
 
   async cellClick(cell, sign = this.currentSign) {
+    // BLOCARE click în timpul animației
+    if (this.board.animations.length > 0) return;
+
     if (!cell) return;
 
     // click pe săgeată

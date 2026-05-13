@@ -20,14 +20,14 @@ class Cell {
     this.isActive = isActive;
     this.type = type;
   }
-
-  draw(hoverState = CONFIG.cell.states.NORMAL) {
+  // pentru a pastra boarder la cell selectat chiar daca nu este hover
+  draw(hoverState = CONFIG.cell.states.NORMAL, isSelected = false) {
     if (!this.isActive) return;
 
     strokeWeight(5);
 
     stroke(
-      hoverState === CONFIG.cell.states.HOVER
+      hoverState === CONFIG.cell.states.HOVER || isSelected
         ? CONFIG.cell.borderColorHover
         : CONFIG.cell.borderColor,
     );

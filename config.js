@@ -1,11 +1,20 @@
 const CONFIG = {
   canvas: {
-    get width() { return document.getElementById('game-div').offsetWidth },
-    get height() { return CONFIG.canvas.width },
-    get bgColor() { return window.getComputedStyle(document.querySelector('body')).backgroundColor },
+    get width() {
+      return document.getElementById("game-div").offsetWidth;
+    },
+    get height() {
+      return CONFIG.canvas.width;
+    },
+    get bgColor() {
+      return window.getComputedStyle(document.querySelector("body"))
+        .backgroundColor;
+    },
   },
   cell: {
-    get cellSize() { return CONFIG.canvas.width/9 },
+    get cellSize() {
+      return CONFIG.canvas.width / 9;
+    },
     bgColor: "#FFF",
     bgColorArrow: "#000",
     get borderColor() {
@@ -21,6 +30,10 @@ const CONFIG = {
       ARROW: 1,
       EDGE: 2,
     },
+  },
+
+  animationCellSelected: {
+    duration: 600,
   },
 
   board: {
