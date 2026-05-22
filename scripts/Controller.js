@@ -1,4 +1,8 @@
-class Controller {
+import CONFIG from "../config.js";
+import { Board } from "./Board.js";
+import { RB } from "./button.js";
+
+export class Controller {
   constructor() {
     this.board = new Board();
 
@@ -23,18 +27,18 @@ class Controller {
     document.getElementById("nameForm").classList.remove("hidden");
   }
 
-  startGameBtnHanddle(){
+  startGameBtnHanddle() {
     let pX = document.getElementById("playerX").value;
     let pO = document.getElementById("playerO").value;
 
     if (pX === "" || pO === "") {
-        alert("Introdu numele ambilor jucători!");
-        return;
+      alert("Introdu numele ambilor jucători!");
+      return;
     }
 
     this.players.x = pX;
     this.players.o = pO;
-    
+
     document.getElementById("start-section").classList.add("hidden");
     document.getElementById("game-div").classList.remove("hidden");
   }

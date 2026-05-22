@@ -1,4 +1,7 @@
-class Board {
+import CONFIG from "../config.js";
+import { Cell } from "./Cell.js";
+
+export class Board {
   constructor() {
     this.cellSize = CONFIG.cell.cellSize;
     this.boardSize = this.cellSize * 7;

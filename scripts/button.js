@@ -1,5 +1,8 @@
+import CONFIG from "../config.js";
+import { Board } from "./Board.js";
+
 // declarăm RB global, obiect - RESTART BUTTON
-RB = {
+export const RB = {
   //setare initiala - scor
   scores: {
     x: 0,

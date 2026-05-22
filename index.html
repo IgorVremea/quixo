@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.tailwindcss.com"></script>
-
     <title>QUIXO</title>
 
     <style>
@@ -36,18 +35,23 @@
     </style>
   </head>
   <body class="bg-teal-500">
-
-    <section id="start-section" class="h-screen flex flex-col justify-center items-center text-center text-white font-bold bg-[radial-gradient(circle_at_bottom,#1e1e2f,#000000)] overflow-hidden">
-      <h1 class="text-[9rem] mb-[30px] text-[#deddd6] drop-shadow-[0_0_20px_rgba(255,0,212,0.8)] shake">
+    <section
+      id="start-section"
+      class="h-screen flex flex-col justify-center items-center text-center text-white font-bold bg-[radial-gradient(circle_at_bottom,#1e1e2f,#000000)] overflow-hidden"
+    >
+      <h1
+        class="text-[9rem] mb-[30px] text-[#deddd6] drop-shadow-[0_0_20px_rgba(255,0,212,0.8)] shake"
+      >
         Quixo
       </h1>
+
       <button
         id="startBtn"
-        onclick="controller.showFormBtnHanddle()"
         class="px-[40px] py-[15px] text-[1.5rem] bg-yellow-400 text-[#1e1e2f] font-bold rounded-lg transition duration-300 hover:scale-110 hover:bg-yellow-300"
       >
         Start New Game!
       </button>
+
       <div id="nameForm" class="hidden mt-[20px]">
         <p class="mb-4 text-lg">Introdu numele jucătorilor:</p>
         <input
@@ -62,25 +66,20 @@
           placeholder="Jucătorul 2 (O)"
           class="block mx-auto p-[10px] text-[1.2rem] rounded-md text-black text-center mb-4"
         />
+
         <button
-          onclick="controller.startGameBtnHanddle()"
+          id="startGameRealBtn"
           class="px-[40px] py-[15px] text-[1.5rem] bg-yellow-400 text-[#1e1e2f] font-bold rounded-lg transition duration-300 hover:scale-110 hover:bg-yellow-300"
         >
           Start Game
         </button>
       </div>
-
     </section>
 
-    <section id="game-div" class="w-[80%] m-auto max-w-[700px]">
+    <section id="game-div" class="w-[80%] m-auto max-w-[700px]"></section>
 
-    </section>
     <script src="https://cdn.jsdelivr.net/npm/p5@1.11.11/lib/p5.min.js"></script>
-    <script src="config.js"></script>
-    <script src="./scripts/Cell.js"></script>
-    <script src="./scripts/Board.js"></script>
-    <script src="./scripts/Controller.js"></script>
-    <script src="./scripts/button.js"></script>
-    <script src="sketch.js"></script>
+
+    <script type="module" src="sketch.js"></script>
   </body>
 </html>

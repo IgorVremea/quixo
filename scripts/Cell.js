@@ -1,4 +1,6 @@
-class Cell {
+import CONFIG from "../config.js";
+
+export class Cell {
   constructor(
     cellSize,
     x,
