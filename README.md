@@ -1,3 +1,7 @@
+# Pornirea proiectului
+În consola screți: 
+`npx serve `
+
 # Quixo – Regulile complete ale jocului
 ## Prezentare și pregătire
 Jocul se joacă pe o tablă 5×5 formată din 25 de cuburi de lemn. Fiecare cub are patru fețe goale, o față cu semnul **X** și **o** față cu semnul O. La început, toate cuburile sunt așezate cu fața goală în sus.

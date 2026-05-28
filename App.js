@@ -2,14 +2,12 @@ import { Controller } from "./scripts/Controller.js";
 import CONFIG from "./config.js";
 import { RB } from "./scripts/button.js";
 
-let controller;
-
 function setup() {
   let canvas = createCanvas(CONFIG.canvas.width, CONFIG.canvas.height);
   canvas.parent("game-div");
 
   // 1. Inițializăm controller-ul local
-  controller = new Controller();
+  const controller = new Controller();
 
   // 2. REPARAȚIA: Îl facem vizibil global pentru Board.js și alte fișiere!
   window.controller = controller;
