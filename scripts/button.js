@@ -66,13 +66,14 @@ export const RB = {
       mouseY < RB.restartBtn.y + RB.restartBtn.h
     ) {
       RB.scores.x = 0;
-      RB.scores.y = 0;
+      RB.scores.o = 0;
       if (controller) {
         controller.board = new Board(); //eliberare tabla
         controller.isInChangeBoardMode = false; //sa nu creada controler ca e intr-o mutate
         controller.isChangedState = false;
         controller.activeCell = null;
         controller.currentSign = "x";
+        controller.winnerText = "";
       }
       console.log("Jocul a fost resetat complet!");
     }

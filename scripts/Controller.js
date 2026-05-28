@@ -252,7 +252,7 @@ export class Controller {
 
   async cellClick(cell, sign = this.currentSign) {
     // BLOCARE click în timpul animației
-    if (this.board.animations.length > 0) return;
+    if (this.board.animations.length > 0 || this.winnerText !== "") return;
 
     if (!cell) return;
 
