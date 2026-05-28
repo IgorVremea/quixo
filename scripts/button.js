@@ -25,7 +25,7 @@ export const RB = {
     textSize(CONFIG.canvas.width / 35);
 
     // scor player X - stânga
-    fill("#3B82F6");
+    fill("#EC4899");
     textAlign(LEFT, CENTER);
 
     text(
@@ -35,7 +35,7 @@ export const RB = {
     );
 
     // scor player O - dreapta
-    fill("#EC4899");
+    fill("#3B82F6");
     textAlign(RIGHT, CENTER);
 
     text(

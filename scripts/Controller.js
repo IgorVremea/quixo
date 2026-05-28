@@ -74,7 +74,7 @@ export class Controller {
 
     text("Rândul:", CONFIG.canvas.width / 2 - 160, 30);
 
-    let playerColor = this.currentSign === "x" ? "#3B82F6" : "#EC4899";
+    let playerColor = this.currentSign === "x" ? "#EC4899" : "#3B82F6";
 
     fill(playerColor);
 
