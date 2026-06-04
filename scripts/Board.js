@@ -20,6 +20,12 @@ export class Board {
       let row = [];
       for (let y = 0; y < 7; y++) {
         switch (CONFIG.board.boardScheme[y][x]) {
+          case "x":
+          case "o":
+            signTemp = CONFIG.board.boardScheme[y][x];
+            isActive = true;
+            typeTemp = CONFIG.cell.type.PIECE;
+            break;
           case "xo":
             signTemp = "";
             isActive = true;
