@@ -11,6 +11,7 @@ export class Board {
     this.x = this.board[0][0].x;
     this.y = this.board[0][0].y;
   }
+
   boardInit() {
     let signTemp;
     let isActive;
@@ -58,17 +59,44 @@ export class Board {
       this.board.push(row);
     }
   }
+
   draw() {
     background(CONFIG.canvas.bgColor);
 
     let hoveredCell = null;
-    // celula pe care am selectat-o sa ramana cu bordura chiar daca nu mai e hover
-    // desen normal pentru toate celulele
+    let hasActiveAnimations = this.animations.length > 0;
+
+    // Identificăm exact ce linie sau coloană se mișcă în acest moment
+    let animatedX = null;
+    let animatedY = null;
+    if (hasActiveAnimations && controller.activeCell) {
+      animatedX = controller.activeCell.boardCoordX;
+      animatedY = controller.activeCell.boardCoordY;
+    }
+
+    // 1. Desenăm fundalul fix al tablei
     for (let y = 0; y < 7; y++) {
       for (let x = 0; x < 7; x++) {
         let currentCell = this.board[x][y];
 
-        currentCell.draw();
+        // VERIFICARE INTELIGENTĂ: Ascundem textul static din spate DOAR dacă celula curentă
+        // face parte din coloana sau rândul care se mută acum. Restul tablei rămâne vizibil!
+        let isPartOfMovingLine = false;
+        if (hasActiveAnimations) {
+          // Dacă mișcarea e pe verticală (X e fix, axa Y se mută) sau orizontală (Y e fix, axa X se mută)
+          if (x === animatedX || y === animatedY) {
+            isPartOfMovingLine = true;
+          }
+        }
+
+        if (isPartOfMovingLine && currentCell.type === CONFIG.cell.type.PIECE) {
+          let originalSign = currentCell.sign;
+          currentCell.sign = ""; // Îi scoatem textul din spate ca să nu se dubleze
+          currentCell.draw(); // Desenează doar pătratul alb gol
+          currentCell.sign = originalSign; // Îi punem imediat valoarea înapoi în memorie
+        } else {
+          currentCell.draw(); // Desenează normal restul tablei (piesele neschimbate rămân sus)
+        }
 
         if (currentCell.isHover(mouseX, mouseY)) {
           hoveredCell = currentCell;
@@ -76,20 +104,37 @@ export class Board {
       }
     }
 
-    // desenăm SELECTED peste toate
-    if (controller.activeCell) {
+    // 2. Desenăm SELECTED (doar când nu se mișcă nimic)
+    if (controller.activeCell && !hasActiveAnimations) {
       controller.activeCell.draw(CONFIG.cell.states.HOVER);
     }
 
-    // desenăm HOVER peste toate
+    // 3. Desenăm HOVER
     if (
       hoveredCell &&
       this.isCellOnEdge(hoveredCell.boardCoordX, hoveredCell.boardCoordY)
     ) {
       hoveredCell.draw(CONFIG.cell.states.HOVER);
     }
-    this.drawAnimations();
+
+    // 4. MASCA DE DECUPARE PENTRU ANIMAȚII (Tăiere la fix pe interiorul 5x5)
+    if (hasActiveAnimations) {
+      push();
+
+      let clipX = this.board[1][1].x + 2;
+      let clipY = this.board[1][1].y + 2;
+      let clipSize = this.cellSize * 5 - 4;
+
+      drawingContext.beginPath();
+      drawingContext.rect(clipX, clipY, clipSize, clipSize);
+      drawingContext.clip();
+
+      this.drawAnimations();
+
+      pop();
+    }
   }
+
   getHoveredCell() {
     for (let y = 0; y < 7; y++) {
       for (let x = 0; x < 7; x++) {
@@ -100,6 +145,7 @@ export class Board {
     }
     return null;
   }
+
   turnArrowsOff() {
     for (let y = 0; y < 7; y++) {
       for (let x = 0; x < 7; x++) {
@@ -108,6 +154,7 @@ export class Board {
       }
     }
   }
+
   isCellOnEdge(x, y) {
     if (
       x != undefined &&
@@ -120,36 +167,35 @@ export class Board {
     }
   }
 
-  // animation pentru cell selected
+  // Randează piesele în mișcare
   drawAnimations() {
     for (let anim of this.animations) {
       let progress = (millis() - anim.startTime) / anim.duration;
-
       progress = constrain(progress, 0, 1);
 
       let x = lerp(anim.fromX, anim.toX, progress);
       let y = lerp(anim.fromY, anim.toY, progress);
 
+      // Dacă animația rulează pentru o celulă care era goală, o ignorăm ca să nu deseneze pătrate albe fantomă
+      if (anim.sign === "") continue;
+
       push();
 
       strokeWeight(5);
       stroke(CONFIG.cell.borderColor);
-
       fill(CONFIG.cell.bgColor);
 
       square(x, y, this.cellSize, 10);
 
       textAlign(CENTER, CENTER);
       textSize(this.cellSize / 1.5);
-
       fill(anim.sign === "x" ? "#F00" : "#00F");
-
       text(anim.sign, x + this.cellSize / 2, y + this.cellSize / 2);
 
       pop();
     }
 
-    // șterge animațiile terminate
+    // Curățare coadă animații
     this.animations = this.animations.filter((anim) => {
       return millis() - anim.startTime < anim.duration;
     });
@@ -157,20 +203,16 @@ export class Board {
 
   completeLine(direction, cell) {
     let tempSign = cell.sign;
-    switch (direction) {
-      // animatiile sunt la fel si pentru LEFT, RIGHT, UP
-      case CONFIG.board.direction.DOWN:
-        //animatie cell selected - se parcurge coloana de jos in sus pentru a nu se suprascrie valori
-        for (let i = cell.boardCoordY; i > 1; i--) {
-          //se stabielste miscarea
-          let fromCell = this.board[cell.boardCoordX][i - 1]; //de unde pleaca
-          let toCell = this.board[cell.boardCoordX][i]; //unde ajunge
 
-          //animatia propriu-zisa - pentru toate piesele care se deplaseaza normal pe coloana
-          //se misca (sign)
-          //de unde -> pana unde
-          // cand incepe
-          //cat dureaza
+    // Eliberăm vizual celula de pe margine din primul moment al click-ului
+    cell.sign = "";
+
+    switch (direction) {
+      case CONFIG.board.direction.DOWN:
+        for (let i = cell.boardCoordY; i > 1; i--) {
+          let fromCell = this.board[cell.boardCoordX][i - 1];
+          let toCell = this.board[cell.boardCoordX][i];
+
           this.animations.push({
             sign: fromCell.sign,
             fromX: fromCell.x,
@@ -182,9 +224,6 @@ export class Board {
           });
         }
 
-        //piesa care iese(selected) si revine sus
-        //piesa selectata porneste din celula selectata
-        //ajunge sus pe coloana (index 1)
         this.animations.push({
           sign: tempSign,
           fromX: cell.x,
@@ -195,19 +234,16 @@ export class Board {
           duration: CONFIG.animationCellSelected.duration + 100,
         });
 
-        //actualizare tabla
         for (let i = cell.boardCoordY; i > 1; i--) {
           this.board[cell.boardCoordX][i].sign =
             this.board[cell.boardCoordX][i - 1].sign;
         }
-
-        this.board[cell.boardCoordX][1].sign = tempSign; //piesa scoasa devine prima de sus
-
+        this.board[cell.boardCoordX][1].sign = tempSign;
         break;
+
       case CONFIG.board.direction.UP:
         for (let i = cell.boardCoordY; i < 5; i++) {
           let fromCell = this.board[cell.boardCoordX][i + 1];
-
           let toCell = this.board[cell.boardCoordX][i];
 
           this.animations.push({
@@ -235,14 +271,12 @@ export class Board {
           this.board[cell.boardCoordX][i].sign =
             this.board[cell.boardCoordX][i + 1].sign;
         }
-
         this.board[cell.boardCoordX][5].sign = tempSign;
-
         break;
+
       case CONFIG.board.direction.LEFT:
         for (let i = cell.boardCoordX; i < 5; i++) {
           let fromCell = this.board[i + 1][cell.boardCoordY];
-
           let toCell = this.board[i][cell.boardCoordY];
 
           this.animations.push({
@@ -270,14 +304,12 @@ export class Board {
           this.board[i][cell.boardCoordY].sign =
             this.board[i + 1][cell.boardCoordY].sign;
         }
-
         this.board[5][cell.boardCoordY].sign = tempSign;
-
         break;
+
       case CONFIG.board.direction.RIGHT:
         for (let i = cell.boardCoordX; i > 1; i--) {
           let fromCell = this.board[i - 1][cell.boardCoordY];
-
           let toCell = this.board[i][cell.boardCoordY];
 
           this.animations.push({
@@ -305,11 +337,11 @@ export class Board {
           this.board[i][cell.boardCoordY].sign =
             this.board[i - 1][cell.boardCoordY].sign;
         }
-
         this.board[1][cell.boardCoordY].sign = tempSign;
-
         break;
+
       default:
+        break;
     }
   }
 }
