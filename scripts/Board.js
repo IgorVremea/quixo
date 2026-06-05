@@ -350,4 +350,117 @@ export class Board {
         break;
     }
   }
+
+  // ==========================================
+  // METODE SPECIFICE PENTRU INTELIGENȚA ARTIFICIALĂ
+  // ==========================================
+
+  /**
+   * Creează o clonă virtuală a tablei curente și aplică o mutare pe ea, instant, fără animații grafice.
+   */
+  copiazaSiAplicaMutare(mutare, semnJucator) {
+    const copieTabla = new Board();
+
+    // Copiem starea exactă a semnelor de pe tabla reală pe cea clonată
+    for (let x = 0; x < 7; x++) {
+      for (let y = 0; y < 7; y++) {
+        copieTabla.board[x][y].sign = this.board[x][y].sign;
+        copieTabla.board[x][y].isActive = this.board[x][y].isActive;
+      }
+    }
+
+    // Identificăm piesa pe care AI-ul vrea să o ridice de pe margine pe tabla clonată
+    let celulaSimulata = copieTabla.board[mutare.x][mutare.y];
+    celulaSimulata.sign = semnJucator; // Îi atribuim semnul AI-ului ("o")
+
+    // Aplicăm logica de împingere instantanee, fără animații
+    copieTabla.completeLineLogic(mutare.directie, celulaSimulata);
+
+    return copieTabla;
+  }
+
+  /**
+   * Identică cu metoda ta 'completeLine', dar modifică doar matricea de string-uri, fără p5.js / animations.
+   */
+  completeLineLogic(direction, cell) {
+    let tempSign = cell.sign;
+    cell.sign = "";
+
+    switch (direction) {
+      case CONFIG.board.direction.DOWN:
+        for (let i = cell.boardCoordY; i > 1; i--) {
+          this.board[cell.boardCoordX][i].sign =
+            this.board[cell.boardCoordX][i - 1].sign;
+        }
+        this.board[cell.boardCoordX][1].sign = tempSign;
+        break;
+
+      case CONFIG.board.direction.UP:
+        for (let i = cell.boardCoordY; i < 5; i++) {
+          this.board[cell.boardCoordX][i].sign =
+            this.board[cell.boardCoordX][i + 1].sign;
+        }
+        this.board[cell.boardCoordX][5].sign = tempSign;
+        break;
+
+      case CONFIG.board.direction.LEFT:
+        for (let i = cell.boardCoordX; i < 5; i++) {
+          this.board[i][cell.boardCoordY].sign =
+            this.board[i + 1][cell.boardCoordY].sign;
+        }
+        this.board[5][cell.boardCoordY].sign = tempSign;
+        break;
+
+      case CONFIG.board.direction.RIGHT:
+        for (let i = cell.boardCoordX; i > 1; i--) {
+          this.board[i][cell.boardCoordY].sign =
+            this.board[i - 1][cell.boardCoordY].sign;
+        }
+        this.board[1][cell.boardCoordY].sign = tempSign;
+        break;
+    }
+  }
+
+  /**
+   * Scanează marginea tablei (5x5) și returnează o listă cu toate mutările valide.
+   */
+  getToateMutarileValide(semnJucator) {
+    let mutariValide = [];
+
+    // Direcțiile posibile mapate din CONFIG
+    const d = CONFIG.board.direction;
+
+    // Parcurgem tabla interioară de 5x5
+    for (let x = 1; x <= 5; x++) {
+      for (let y = 1; y <= 5; y++) {
+        // AI-ul poate alege doar piese de pe margine (isCellOnEdge)
+        // și doar piese care sunt fie goale (""), fie îi aparțin deja
+        if (
+          this.isCellOnEdge(x, y) &&
+          (this.board[x][y].sign === "" ||
+            this.board[x][y].sign === semnJucator)
+        ) {
+          // Adăugăm direcțiile logice în funcție de poziția piesei pe tablă
+          if (x === 1) mutariValide.push({ x, y, directie: d.RIGHT });
+          if (x === 5) mutariValide.push({ x, y, directie: d.LEFT });
+          if (y === 1) mutariValide.push({ x, y, directie: d.DOWN });
+          if (y === 5) mutariValide.push({ x, y, directie: d.UP });
+        }
+      }
+    }
+    return mutariValide;
+  }
+
+  /**
+   * Numără câte piese de un anumit tip sunt pe tablă (folositor pentru fitness-ul modului Easy)
+   */
+  numaraPiese(semnJucator) {
+    let count = 0;
+    for (let x = 1; x <= 5; x++) {
+      for (let y = 1; y <= 5; y++) {
+        if (this.board[x][y].sign === semnJucator) count++;
+      }
+    }
+    return count;
+  }
 }

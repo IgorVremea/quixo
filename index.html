@@ -28,7 +28,6 @@
           transform: translateX(0);
         }
       }
-
       .shake {
         animation: shake 0.6s ease;
       }
@@ -53,25 +52,56 @@
         Start New Game!
       </button>
 
-      <div id="nameForm" class="hidden mt-[20px]">
-        <p class="mb-4 text-lg">Introdu numele jucătorilor:</p>
+      <div id="gameModeSelection" style="display: none" class="mt-[20px] gap-4">
+        <p class="mb-2 text-xl text-yellow-300">Alege Modul de Joc:</p>
+
+        <button
+          onclick="controller.selecteazaMod('hvh')"
+          class="w-[280px] py-[12px] bg-emerald-500 text-white font-bold rounded-lg transition duration-300 hover:scale-105 hover:bg-emerald-400 shadow-md"
+        >
+          ⚔️ Human vs Human
+        </button>
+
+        <button
+          onclick="controller.selecteazaMod('easy')"
+          class="w-[280px] py-[12px] bg-sky-500 text-white font-bold rounded-lg transition duration-300 hover:scale-105 hover:bg-sky-400 shadow-md"
+        >
+          👶 VS Computer (Easy)
+        </button>
+
+        <button
+          onclick="controller.selecteazaMod('moderate')"
+          class="w-[280px] py-[12px] bg-purple-500 text-white font-bold rounded-lg transition duration-300 hover:scale-105 hover:bg-purple-400 shadow-md"
+        >
+          🤖 VS Computer (Moderate)
+        </button>
+      </div>
+
+      <div id="nameForm" style="display: none" class="mt-[20px]">
+        <p id="nameFormTitle" class="mb-4 text-lg">
+          Introdu numele jucătorilor:
+        </p>
+
         <input
           type="text"
           id="playerX"
           placeholder="Jucătorul 1 (X)"
           class="block mx-auto p-[10px] text-[1.2rem] rounded-md text-black text-center mb-4"
         />
-        <input
-          type="text"
-          id="playerO"
-          placeholder="Jucătorul 2 (O)"
-          class="block mx-auto p-[10px] text-[1.2rem] rounded-md text-black text-center mb-4"
-        />
+
+        <div id="playerOContainer">
+          <input
+            type="text"
+            id="playerO"
+            placeholder="Jucătorul 2 (O)"
+            class="block mx-auto p-[10px] text-[1.2rem] rounded-md text-black text-center mb-4"
+          />
+        </div>
 
         <button
           onclick="controller.startGameBtnHanddle()"
           id="startGameRealBtn"
-          class="px-[40px] py-[15px] text-[1.5rem] bg-yellow-400 text-[#1e1e2f] font-bold rounded-lg transition duration-300 hover:scale-110 hover:bg-yellow-300"
+          class="px-[40px] py-[15px] text-[1.5rem] bg-yellow-400 text-[#1e1e2f] font-bold rounded-lg transition duration-300 hover:scale-110 hover:bg-yellow-300 mt-2"
         >
           Start Game
         </button>
@@ -81,7 +111,6 @@
     <section id="game-div" class="w-[80%] m-auto max-w-[700px]"></section>
 
     <script src="https://cdn.jsdelivr.net/npm/p5@1.11.11/lib/p5.min.js"></script>
-
     <script type="module" src="App.js"></script>
   </body>
 </html>
