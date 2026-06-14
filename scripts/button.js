@@ -18,8 +18,8 @@ export const RB = {
   drawButton: function () {
     // scor
 
-    let playerX = controller ? controller.players.x : "Player X";
-    let playerO = controller ? controller.players.o : "Player O";
+    let playerX = window.controller ? window.controller.players.x : "Player X";
+    let playerO = window.controller ? window.controller.players.o : "Player O";
 
     // text responsive
     textSize(CONFIG.canvas.width / 35);
@@ -67,13 +67,13 @@ export const RB = {
     ) {
       RB.scores.x = 0;
       RB.scores.o = 0;
-      if (controller) {
-        controller.board = new Board(); //eliberare tabla
-        controller.isInChangeBoardMode = false; //sa nu creada controler ca e intr-o mutate
-        controller.isChangedState = false;
-        controller.activeCell = null;
-        controller.currentSign = "x";
-        controller.winnerText = "";
+      if (window.controller) {
+        window.controller.board = new Board(); //eliberare tabla
+        window.controller.isInChangeBoardMode = false; //sa nu creada controler ca e intr-o mutate
+        window.controller.isChangedState = false;
+        window.controller.activeCell = null;
+        window.controller.currentSign = "x";
+        window.controller.winnerText = "";
       }
       console.log("Jocul a fost resetat complet!");
     }

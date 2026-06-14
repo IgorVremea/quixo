@@ -67,7 +67,44 @@ export class Board {
   }
 
   draw() {
-    background(CONFIG.canvas.bgColor);
+    background("#1b1009");
+
+    // Fundal profesional de lemn pentru zona tablei
+    push();
+
+    const boardX = this.board[0][0].x;
+    const boardY = this.board[0][0].y;
+    const boardSize = this.cellSize * 7;
+
+    noStroke();
+
+    // rama exterioara
+    fill("#3a210f");
+    rect(boardX - 22, boardY - 22, boardSize + 44, boardSize + 44, 10);
+
+    // textura lemn rama
+    for (let i = 0; i < boardSize + 44; i += 18) {
+      const shade = i % 36 === 0 ? "#7a4a24" : "#5a3318";
+      fill(shade);
+      rect(boardX - 22 + i, boardY - 22, 18, boardSize + 44, 2);
+    }
+
+    // lumina subtila peste rama
+    fill("rgba(255, 232, 190, 0.10)");
+    rect(boardX - 16, boardY - 16, boardSize + 32, 8, 6);
+
+    // interiorul tablei
+    fill("#6f421f");
+    rect(boardX - 6, boardY - 6, boardSize + 12, boardSize + 12, 8);
+
+    // textura fina in interior
+    stroke("rgba(255, 232, 190, 0.16)");
+    strokeWeight(1);
+    for (let y = boardY + 6; y < boardY + boardSize; y += 16) {
+      line(boardX + 8, y, boardX + boardSize - 8, y + sin(y * 0.04) * 4);
+    }
+
+    pop();
 
     let hoveredCell = null;
     let hasActiveAnimations = this.animations.length > 0;
@@ -75,9 +112,9 @@ export class Board {
     // Identificăm exact ce linie sau coloană se mișcă în acest moment
     let animatedX = null;
     let animatedY = null;
-    if (hasActiveAnimations && controller.activeCell) {
-      animatedX = controller.activeCell.boardCoordX;
-      animatedY = controller.activeCell.boardCoordY;
+    if (hasActiveAnimations && window.controller && window.controller.activeCell) {
+      animatedX = window.controller.activeCell.boardCoordX;
+      animatedY = window.controller.activeCell.boardCoordY;
     }
 
     // 1. Desenăm fundalul fix al tablei
@@ -95,13 +132,16 @@ export class Board {
           }
         }
 
-        if (isPartOfMovingLine && currentCell.type === CONFIG.cell.type.PIECE) {
-          let originalSign = currentCell.sign;
-          currentCell.sign = ""; // Îi scoatem textul din spate ca să nu se dubleze
-          currentCell.draw(); // Desenează doar pătratul alb gol
-          currentCell.sign = originalSign; // Îi punem imediat valoarea înapoi în memorie
+        if (isPartOfMovingLine && currentCell.sign) {
+          const originalSign = currentCell.sign;
+
+          // Desenam celula fara semn, ca piesa animata sa nu treaca vizual peste X/O-ul static
+          currentCell.sign = "";
+          currentCell.draw();
+
+          currentCell.sign = originalSign;
         } else {
-          currentCell.draw(); // Desenează normal restul tablei (piesele neschimbate rămân sus)
+          currentCell.draw();
         }
 
         if (currentCell.isHover(mouseX, mouseY)) {
@@ -111,8 +151,8 @@ export class Board {
     }
 
     // 2. Desenăm SELECTED (doar când nu se mișcă nimic)
-    if (controller.activeCell && !hasActiveAnimations) {
-      controller.activeCell.draw(CONFIG.cell.states.HOVER);
+    if (window.controller && window.controller.activeCell && !hasActiveAnimations) {
+      window.controller.activeCell.draw(CONFIG.cell.states.HOVER);
     }
 
     // 3. Desenăm HOVER
@@ -121,6 +161,9 @@ export class Board {
       this.isCellOnEdge(hoveredCell.boardCoordX, hoveredCell.boardCoordY)
     ) {
       hoveredCell.draw(CONFIG.cell.states.HOVER);
+      cursor("pointer");
+    } else {
+      cursor("default");
     }
 
     // 4. MASCA DE DECUPARE PENTRU ANIMAȚII (Tăiere la fix pe interiorul 5x5)
@@ -187,11 +230,11 @@ export class Board {
 
       push();
 
-      strokeWeight(5);
-      stroke(CONFIG.cell.borderColor);
-      fill(CONFIG.cell.bgColor);
+      fill("#b9783d");
+      stroke("#3a210f");
+      strokeWeight(4);
 
-      square(x, y, this.cellSize, 10);
+      rect(x, y, this.cellSize, this.cellSize, 6);
 
       textAlign(CENTER, CENTER);
       textSize(this.cellSize / 1.5);
