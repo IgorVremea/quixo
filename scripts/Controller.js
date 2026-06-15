@@ -192,26 +192,20 @@ export class Controller {
     textSize(20);
     textAlign(LEFT, CENTER);
     fill(255);
-    text("Rândul:", CONFIG.canvas.width / 2 - 160, 30);
-
     let playerColor = this.currentSign === "x" ? "#EC4899" : "#3B82F6";
     fill(playerColor);
-    text(
-      this.getCurrentPlayerName() + " (" + this.currentSign.toUpperCase() + ")",
-      CONFIG.canvas.width / 2 - 80,
-      30,
-    );
+    text(this.currentSign.toUpperCase(), CONFIG.canvas.width / 2 - 160, 30);
 
-    if (this.winnerText !== "") {
-      let boxWidth = 420;
-      let boxHeight = 100;
-      let x = CONFIG.canvas.width / 2 - boxWidth / 2;
-      let y = CONFIG.canvas.height / 2 - boxHeight / 2 + 220;
+   // if (this.winnerText !== "") {
+   //   let boxWidth = 420;
+    //  let boxHeight = 100;
+    //  let x = CONFIG.canvas.width / 2 - boxWidth / 2;
+    //  let y = CONFIG.canvas.height / 2 - boxHeight / 2 + 220;
 
-      fill(255, 255, 255, 220);
-      stroke("#fdfffe");
-      strokeWeight(4);
-      rect(x, y, boxWidth, boxHeight, 20);
+      //fill(255, 255, 255, 220);
+      //stroke("#fdfffe");
+      //strokeWeight(4);
+     // rect(x, y, boxWidth, boxHeight, 20);
 
       textAlign(CENTER, CENTER);
       textSize(42);
@@ -223,7 +217,7 @@ export class Controller {
         CONFIG.canvas.height / 2 + 220,
       );
     }
-  }
+  //}
 
   changeBoardMode(cell) {
     if (
