@@ -21,6 +21,25 @@ export const RB = {
     h: CONFIG.canvas.height / 13,
   },
 
+  soundEnabled: true,
+  isPaused: false,
+
+  optionsBtn: {
+    x: 15,
+    y: CONFIG.canvas.height - 65,
+    w: 50,
+    h: 50,
+  },
+
+  isRulesOpen: false,
+
+  rulesBtn: {
+    x: 15,
+    y: CONFIG.canvas.height - 115,
+    w: 50,
+    h: 50,
+  },
+
   isMouseInside: function (btn) {
     return (
       mouseX > btn.x &&
@@ -40,6 +59,234 @@ export const RB = {
     }
 
     return size;
+  },
+
+  drawSettingsIcon: function (btn) {
+    const isHovered = RB.isMouseInside(btn);
+
+    push();
+
+    noStroke();
+    fill("rgba(0, 0, 0, 0.38)");
+    rect(btn.x + 3, btn.y + 5, btn.w, btn.h, 8);
+
+    stroke(isHovered ? "#fff1b8" : "#3a210f");
+    strokeWeight(isHovered ? 3 : 2);
+    fill(isHovered ? "#fff1b8" : "#c89152");
+    rect(btn.x, btn.y, btn.w, btn.h, 8);
+
+    noStroke();
+    fill("#7a4a24");
+    rect(btn.x + 2, btn.y + btn.h * 0.62, btn.w - 4, btn.h * 0.28, 6);
+
+    fill("rgba(255, 255, 255, 0.2)");
+    rect(btn.x + 5, btn.y + 4, btn.w - 10, btn.h * 0.25, 5);
+
+    // Draw gear icon
+    stroke("#2a170b");
+    strokeWeight(1.5);
+    fill("#2a170b");
+    const iconX = btn.x + btn.w / 2;
+    const iconY = btn.y + btn.h / 2;
+    const gearSize = btn.w / 4;
+
+    // Center circle
+    circle(iconX, iconY, gearSize / 2);
+
+    // Gear teeth
+    for (let i = 0; i < 8; i++) {
+      const angle = (TWO_PI / 8) * i;
+      const x1 = iconX + cos(angle) * gearSize * 0.6;
+      const y1 = iconY + sin(angle) * gearSize * 0.6;
+      const x2 = iconX + cos(angle) * gearSize * 0.85;
+      const y2 = iconY + sin(angle) * gearSize * 0.85;
+      line(x1, y1, x2, y2);
+    }
+
+    pop();
+  },
+
+  drawRulesIcon: function (btn) {
+    const isHovered = RB.isMouseInside(btn);
+
+    push();
+
+    noStroke();
+    fill("rgba(0, 0, 0, 0.38)");
+    rect(btn.x + 3, btn.y + 5, btn.w, btn.h, 8);
+
+    stroke(isHovered ? "#fff1b8" : "#3a210f");
+    strokeWeight(isHovered ? 3 : 2);
+    fill(isHovered ? "#fff1b8" : "#c89152");
+    rect(btn.x, btn.y, btn.w, btn.h, 8);
+
+    noStroke();
+    fill("#7a4a24");
+    rect(btn.x + 2, btn.y + btn.h * 0.62, btn.w - 4, btn.h * 0.28, 6);
+
+    fill("rgba(255, 255, 255, 0.2)");
+    rect(btn.x + 5, btn.y + 4, btn.w - 10, btn.h * 0.25, 5);
+
+    // Draw book/rules icon
+    stroke("#2a170b");
+    strokeWeight(1.2);
+    const iconX = btn.x + btn.w / 2;
+    const iconY = btn.y + btn.h / 2;
+    const bookW = btn.w / 3.5;
+    const bookH = btn.h / 2.2;
+
+    // Book outline
+    noFill();
+    rect(iconX - bookW / 2, iconY - bookH / 2, bookW, bookH, 2);
+
+    // Lines representing text
+    stroke("#2a170b");
+    strokeWeight(1);
+    line(iconX - bookW / 3, iconY - bookH / 4, iconX + bookW / 3, iconY - bookH / 4);
+    line(iconX - bookW / 3, iconY, iconX + bookW / 3, iconY);
+    line(iconX - bookW / 3, iconY + bookH / 4, iconX + bookW / 3, iconY + bookH / 4);
+
+    pop();
+  },
+
+  playSound: function (type = "click") {
+    if (!RB.soundEnabled) return;
+
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    const audioCtx = new AudioContext();
+
+    const oscillator = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+
+    oscillator.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    if (type === "win") {
+      oscillator.frequency.value = 660;
+      gain.gain.value = 0.08;
+    } else if (type === "error") {
+      oscillator.frequency.value = 180;
+      gain.gain.value = 0.06;
+    } else {
+      oscillator.frequency.value = 420;
+      gain.gain.value = 0.05;
+    }
+
+    oscillator.type = "sine";
+    oscillator.start();
+
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.12);
+    oscillator.stop(audioCtx.currentTime + 0.12);
+  },
+
+  drawPauseMenu: function () {
+    if (!RB.isPaused) return;
+
+    push();
+
+    fill("rgba(0, 0, 0, 0.55)");
+    noStroke();
+    rect(0, 0, CONFIG.canvas.width, CONFIG.canvas.height);
+
+    const boxW = CONFIG.canvas.width / 2;
+    const boxH = CONFIG.canvas.height / 2.6;
+    const boxX = CONFIG.canvas.width / 2 - boxW / 2;
+    const boxY = CONFIG.canvas.height / 2 - boxH / 2;
+
+    fill("#3a210f");
+    stroke("#f2c94c");
+    strokeWeight(4);
+    rect(boxX, boxY, boxW, boxH, 12);
+
+    fill("#fff1c7");
+    noStroke();
+    textAlign(CENTER, CENTER);
+    textStyle(BOLD);
+    textSize(28);
+    text("Optiuni", CONFIG.canvas.width / 2, boxY + 45);
+
+    RB.continueBtn = {
+      x: boxX + boxW / 2 - 110,
+      y: boxY + 90,
+      w: 220,
+      h: 48,
+    };
+
+    RB.soundBtn = {
+      x: boxX + boxW / 2 - 110,
+      y: boxY + 150,
+      w: 220,
+      h: 48,
+    };
+
+    RB.menuRestartBtn = {
+      x: boxX + boxW / 2 - 110,
+      y: boxY + 210,
+      w: 220,
+      h: 48,
+    };
+
+    RB.drawWoodButton(RB.continueBtn, "Continua");
+    RB.drawWoodButton(
+      RB.soundBtn,
+      RB.soundEnabled ? "Sunet: ON" : "Sunet: OFF",
+    );
+    RB.drawWoodButton(RB.menuRestartBtn, "Restart");
+
+    pop();
+  },
+
+  drawRulesMenu: function () {
+    if (!RB.isRulesOpen) return;
+
+    push();
+
+    fill("rgba(0, 0, 0, 0.58)");
+    noStroke();
+    rect(0, 0, CONFIG.canvas.width, CONFIG.canvas.height);
+
+    const boxW = CONFIG.canvas.width / 1.55;
+    const boxH = CONFIG.canvas.height / 1.9;
+    const boxX = CONFIG.canvas.width / 2 - boxW / 2;
+    const boxY = CONFIG.canvas.height / 2 - boxH / 2;
+
+    fill("#3a210f");
+    stroke("#f2c94c");
+    strokeWeight(4);
+    rect(boxX, boxY, boxW, boxH, 12);
+
+    fill("#fff1c7");
+    noStroke();
+    textAlign(CENTER, CENTER);
+    textStyle(BOLD);
+    textSize(26);
+    text("Reguli Quixo", CONFIG.canvas.width / 2, boxY + 42);
+
+    fill("#f8ead2");
+    textAlign(LEFT, TOP);
+    textStyle(NORMAL);
+    textSize(16);
+
+    const rulesText =
+      "1. Jocul se joaca pe o tabla de 5 x 5.\n" +
+      "2. La randul tau alegi un cub de pe margine.\n" +
+      "3. Poti alege un cub gol sau un cub cu simbolul tau.\n" +
+      "4. Cubul ales se impinge inapoi pe tabla dintr-o directie valida.\n" +
+      "5. Scopul este sa faci 5 simboluri la rand: orizontal, vertical sau diagonal.\n" +
+      "6. Dupa fiecare runda, jucatorii schimba X si O intre ei.";
+
+    text(rulesText, boxX + 38, boxY + 88, boxW - 76, boxH - 150);
+
+    RB.closeRulesBtn = {
+      x: CONFIG.canvas.width / 2 - 95,
+      y: boxY + boxH - 72,
+      w: 190,
+      h: 46,
+    };
+
+    RB.drawWoodButton(RB.closeRulesBtn, "Inchide");
+
+    pop();
   },
 
   drawHudBackground: function () {
@@ -248,13 +495,18 @@ export const RB = {
     pop();
   },
 
-  resetBoardOnly: function () {
+  resetBoardOnly: function (shouldSwapPlayers = false) {
     if (window.controller) {
+      if (shouldSwapPlayers) {
+        RB.swapPlayersAndScores();
+      }
+
       window.controller.board = new Board();
       window.controller.isInChangeBoardMode = false;
       window.controller.isChangedState = false;
       window.controller.activeCell = null;
-      window.controller.currentSign = "x";
+      // Turn de început va fi tratat de Controller în funcție de opțiunea de inversare roles.
+      // Nu forțăm aici currentSign la "x".
       window.controller.winnerText = "";
     }
   },
@@ -300,45 +552,109 @@ export const RB = {
 
     RB.drawTurnCard();
 
-    RB.drawWoodButton(RB.restartBtn, "Restart", {
-      topColor: "#fff1b8",
-      middleColor: "#f2c94c",
-      bottomColor: "#b97820",
-      textColor: "#2a170b",
-    });
+    RB.drawRulesIcon(RB.rulesBtn);
+    RB.drawSettingsIcon(RB.optionsBtn);
 
     RB.drawWinnerButton();
+    RB.drawPauseMenu();
+    RB.drawRulesMenu();
   },
 
-  mousePressedButton: function () {
-    if (RB.isMouseInside(RB.restartBtn)) {
+ mousePressedButton: function () {
+  // daca meniul de reguli este deschis
+  if (RB.isRulesOpen) {
+    if (RB.closeRulesBtn && RB.isMouseInside(RB.closeRulesBtn)) {
+      RB.playSound("click");
+      RB.isRulesOpen = false;
+      return;
+    }
+
+    return;
+  }
+
+  // daca meniul de pauza/optiuni este deschis
+  if (RB.isPaused) {
+    if (RB.continueBtn && RB.isMouseInside(RB.continueBtn)) {
+      RB.playSound("click");
+      RB.isPaused = false;
+      return;
+    }
+
+    if (RB.soundBtn && RB.isMouseInside(RB.soundBtn)) {
+      RB.soundEnabled = !RB.soundEnabled;
+      RB.playSound("click");
+      return;
+    }
+
+    if (RB.menuRestartBtn && RB.isMouseInside(RB.menuRestartBtn)) {
+      RB.playSound("click");
+      RB.isPaused = false;
       RB.resetFullGame();
+      return;
     }
 
+    return;
+  }
+
+  // butonul de dupa castig: Joaca din nou
   if (window.controller && window.controller.winnerText) {
-      const overlayW = CONFIG.canvas.width / 1.7;
-      const overlayH = CONFIG.canvas.height / 4.2;
-      const overlayY = CONFIG.canvas.height / 2 - overlayH / 2;
+    const overlayW = CONFIG.canvas.width / 1.7;
+    const overlayH = CONFIG.canvas.height / 4.2;
+    const overlayY = CONFIG.canvas.height / 2 - overlayH / 2;
 
-      const playAgainBtn = {
-        x: CONFIG.canvas.width / 2 - overlayW / 4,
-        y: overlayY + overlayH * 0.68,
-        w: overlayW / 2,
-        h: overlayH / 4.5,
-      };
+    const playAgainBtn = {
+      x: CONFIG.canvas.width / 2 - overlayW / 4,
+      y: overlayY + overlayH * 0.68,
+      w: overlayW / 2,
+      h: overlayH / 4.5,
+    };
 
-      if (RB.isMouseInside(playAgainBtn)) {
-        RB.resetBoardOnly();
+    if (RB.isMouseInside(playAgainBtn)) {
+      RB.playSound("click");
+      RB.resetBoardOnly(true);
+      console.log("Runda noua: jucatorii au fost inversati.");
+      if (window.controller && window.controller.swapRolesForRound) {
+        window.controller.swapRolesForRound();
       }
+      return;
     }
 
-    if (
-      window.controller &&
-      window.controller.winnerText &&
-      RB.isMouseInside(RB.playAgainBtn)
-    ) {
-      RB.resetBoardOnly();
-      console.log("A inceput o runda noua!");
-    }
-  },
+    return;
+  }
+
+  // buton optiuni
+  if (RB.isMouseInside(RB.optionsBtn)) {
+    RB.playSound("click");
+    RB.isPaused = true;
+    return;
+  }
+
+  // buton reguli
+  if (RB.isMouseInside(RB.rulesBtn)) {
+    RB.playSound("click");
+    RB.isRulesOpen = true;
+    return;
+  }
+
+  // buton restart
+if (RB.isMouseInside(RB.restartBtn)) {
+  RB.playSound("click");
+  RB.resetFullGame();
+  return;
+}
+
+},
+
+swapPlayersAndScores: function () {
+  if (!window.controller) return;
+
+  const oldPlayerX = window.controller.players.x;
+  window.controller.players.x = window.controller.players.o;
+  window.controller.players.o = oldPlayerX;
+
+  const oldScoreX = RB.scores.x;
+  RB.scores.x = RB.scores.o;
+  RB.scores.o = oldScoreX;
+}
+
 };

@@ -12,7 +12,14 @@ export class Controller {
     this.isChangedState = false;
 
     this.activeCell = null;
-    this.currentSign = "x";
+
+    // Semne pentru om vs computer (inversarea rolurilor trebuie să schimbe semnele)
+    this.humanSign = "x";
+    this.aiSign = "o";
+
+    // În runda curentă, mută cine are semnul din currentSign
+    // (umanul va muta când currentSign == humanSign)
+    this.currentSign = this.humanSign;
     this.winnerText = "";
 
     this.players = {
@@ -138,10 +145,12 @@ export class Controller {
    * Rutină automată executată în bucla p5.js (tick) pentru mutările calculatorului
    */
   async veridicaRandulAI() {
-    // Verificăm dacă este modul vs Computer, dacă este rândul lui ('o'), jocul nu s-a terminat și nu rulează alte animații
+    // Verificăm dacă este modul vs Computer, dacă este rândul lui (semnul actual al AI-ului),
+    // jocul nu s-a terminat și nu rulează alte animații.
+    // Notă: aici codul tău avea semnul "o" hardcodat; asta rupea inversarea rolurilor.
     if (
       this.vsComputer &&
-      this.currentSign === "o" &&
+      this.currentSign === this.aiSign &&
       this.winnerText === "" &&
       this.board.animations.length === 0 &&
       !this.isAiThinking
@@ -159,8 +168,8 @@ export class Controller {
         let piesaAlesa =
           this.board.board[mutareRecomandata.x][mutareRecomandata.y];
 
-        // O setăm ca fiind piesa activă și îi atribuim semnul calculatorului ('o')
-        piesaAlesa.sign = "o";
+        // O setăm ca fiind piesa activă și îi atribuim semnul AI-ului
+        piesaAlesa.sign = this.aiSign;
         this.activeCell = piesaAlesa;
 
         // 2. Executăm mutarea și împingerea pe linie în mod direct, fără să mai simulăm click-uri pe săgeți
@@ -180,8 +189,8 @@ export class Controller {
           return;
         }
 
-        // Schimbăm rândul înapoi la jucătorul uman ('x')
-        this.currentSign = "x";
+        // Schimbăm rândul înapoi la jucătorul uman
+        this.currentSign = this.humanSign;
       }
 
       this.isAiThinking = false;
@@ -300,12 +309,23 @@ export class Controller {
     return null;
   }
 
+  swapRolesForRound() {
+    // Inversăm semnele (tu devii semnul opus în runda următoare)
+    const oldHuman = this.humanSign;
+    this.humanSign = this.aiSign;
+    this.aiSign = oldHuman;
+
+    // În runda următoare tu începi (cum ai cerut)
+    this.currentSign = this.humanSign;
+  }
+
   resetGameBoard() {
     this.board = new Board();
     this.isInChangeBoardMode = false;
     this.isChangedState = false;
     this.activeCell = null;
-    this.currentSign = "x";
+    // setăm din nou runda astfel încât să fie corect pentru semnele curente
+    this.currentSign = this.humanSign;
     this.winnerText = "";
     this.isAiThinking = false;
   }

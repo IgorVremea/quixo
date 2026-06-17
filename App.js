@@ -20,6 +20,7 @@ function setup() {
   const controller = new Controller();
 
   window.controller = controller;
+  window.RB = RB;
 
   // Conectăm butoanele din HTML
 
@@ -59,6 +60,9 @@ function mousePressed() {
 
   RB.mousePressedButton();
 
+  if (RB.isPaused || RB.isRulesOpen) return;
+  if (controller.winnerText) return;
+
   let clickedCell = controller.board.getHoveredCell();
 
   controller.cellClick(clickedCell);
@@ -71,11 +75,3 @@ window.setup = setup;
 window.draw = draw;
 
 window.mousePressed = mousePressed;
-
-fill("#b9783d");
-
-stroke("#3a210f");
-
-strokeWeight(4);
-
-rect(x, y, cellSize, cellSize, 6);
