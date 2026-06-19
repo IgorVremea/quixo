@@ -303,6 +303,7 @@ export class Controller {
   }
 
   async cellClick(cell, sign = this.currentSign) {
+    RB.playSound("click");
     if (this.board.animations.length > 0 || this.winnerText !== "") return;
     if (!cell) return;
     if (this.isAiThinking) return; // Prevenim click-urile umane în timpul procesării AI
