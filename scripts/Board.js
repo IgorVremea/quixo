@@ -501,10 +501,10 @@ export class Board {
             this.board[x][y].sign === semnJucator)
         ) {
           // Adăugăm direcțiile logice în funcție de poziția piesei pe tablă
-          if (x === 1) mutariValide.push({ x, y, directie: d.RIGHT });
-          if (x === 5) mutariValide.push({ x, y, directie: d.LEFT });
-          if (y === 1) mutariValide.push({ x, y, directie: d.DOWN });
-          if (y === 5) mutariValide.push({ x, y, directie: d.UP });
+          if (x === 1) mutariValide.push({ x, y, directie: d.LEFT });
+          if (x === 5) mutariValide.push({ x, y, directie: d.RIGHT });
+          if (y === 1) mutariValide.push({ x, y, directie: d.UP });
+          if (y === 5) mutariValide.push({ x, y, directie: d.DOWN });
         }
       }
     }
