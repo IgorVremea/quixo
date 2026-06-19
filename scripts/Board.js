@@ -227,27 +227,27 @@ export class Board {
       let y = lerp(anim.fromY, anim.toY, progress);
 
       // Dacă animația rulează pentru o celulă care era goală, o ignorăm ca să nu deseneze pătrate albe fantomă
-      if (anim.sign === "") continue;
-      anim.isActive = false;
-      push();
-
-      fill("#b9783d");
-      stroke("#3a210f");
-      strokeWeight(4);
-
-      rect(x, y, this.cellSize, this.cellSize, 6);
-      // const tempCell = new Cell(CONFIG.cell.cellSize, x, y, undefined, undefined, anim.sign);
-      textAlign(CENTER, CENTER);
-      textSize(this.cellSize / 1.5);
-      fill(anim.sign === "x" ? "#F00" : "#00F");
-      text(anim.sign, x + this.cellSize / 2, y + this.cellSize / 2);
-
+      // if (anim.sign === "") continue;
+      push()
+      this.animations.forEach(animEach => {
+        animEach.fromCell.isActive = false;
+        animEach.fromCell.draw();
+        animEach.toSell.isActive = false;
+        animEach.toSell.draw();
+      });
+      const animatedCell = new Cell(CONFIG.cell.cellSize, x, y, undefined, undefined, anim.sign);
+      animatedCell.draw(CONFIG.cell.states.NORMAL, true);
       pop();
     }
-
     // Curățare coadă animații
     this.animations = this.animations.filter((anim) => {
-      return millis() - anim.startTime < anim.duration;
+      if(millis() - anim.startTime < anim.duration){
+        return true;
+      } else {
+        anim.fromCell.isActive = true;
+        anim.toSell.isActive = true;
+        return false;
+      }
     });
   }
 
@@ -271,6 +271,8 @@ export class Board {
             toY: toCell.y,
             startTime: millis(),
             duration: CONFIG.animationCellSelected.duration,
+            fromCell: cell,
+            toSell: toCell
           });
         }
 
@@ -282,6 +284,8 @@ export class Board {
           toY: this.board[cell.boardCoordX][1].y,
           startTime: millis(),
           duration: CONFIG.animationCellSelected.duration,
+          fromCell: cell,
+          toSell: this.board[cell.boardCoordX][1]
         });
 
         for (let i = cell.boardCoordY; i > 1; i--) {
@@ -304,6 +308,8 @@ export class Board {
             toY: toCell.y,
             startTime: millis(),
             duration: CONFIG.animationCellSelected.duration,
+            fromCell: cell,
+            toSell: toCell
           });
         }
 
@@ -315,6 +321,8 @@ export class Board {
           toY: this.board[cell.boardCoordX][5].y,
           startTime: millis(),
           duration: CONFIG.animationCellSelected.duration,
+          fromCell: cell,
+          toSell: this.board[cell.boardCoordX][5]
         });
 
         for (let i = cell.boardCoordY; i < 5; i++) {
@@ -337,6 +345,8 @@ export class Board {
             toY: toCell.y,
             startTime: millis(),
             duration: CONFIG.animationCellSelected.duration,
+            fromCell: cell,
+            toSell: toCell
           });
         }
 
@@ -348,6 +358,8 @@ export class Board {
           toY: this.board[5][cell.boardCoordY].y,
           startTime: millis(),
           duration: CONFIG.animationCellSelected.duration,
+          fromCell: cell,
+          toSell: this.board[5][cell.boardCoordY]
         });
 
         for (let i = cell.boardCoordX; i < 5; i++) {
@@ -370,6 +382,8 @@ export class Board {
             toY: toCell.y,
             startTime: millis(),
             duration: CONFIG.animationCellSelected.duration,
+            fromCell: cell,
+            toSell: toCell
           });
         }
 
@@ -381,6 +395,8 @@ export class Board {
           toY: this.board[1][cell.boardCoordY].y,
           startTime: millis(),
           duration: CONFIG.animationCellSelected.duration,
+          fromCell: cell,
+          toSell: this.board[1][cell.boardCoordY]
         });
 
         for (let i = cell.boardCoordX; i > 1; i--) {
