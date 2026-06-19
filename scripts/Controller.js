@@ -14,12 +14,12 @@ export class Controller {
     this.activeCell = null;
 
     // Semne pentru om vs computer (inversarea rolurilor trebuie să schimbe semnele)
-    this.humanSign = "x";
-    this.aiSign = "o";
+    this.signP1 = "x";
+    this.signP2 = "o";
 
     // În runda curentă, mută cine are semnul din currentSign
     // (umanul va muta când currentSign == humanSign)
-    this.currentSign = this.humanSign;
+    this.currentSign = this.signP1;
     this.winnerText = "";
 
     this.players = {
@@ -150,7 +150,7 @@ export class Controller {
     // Notă: aici codul tău avea semnul "o" hardcodat; asta rupea inversarea rolurilor.
     if (
       this.vsComputer &&
-      this.currentSign === this.aiSign &&
+      this.currentSign === this.signP2 &&
       this.winnerText === "" &&
       this.board.animations.length === 0 &&
       !this.isAiThinking
@@ -169,7 +169,7 @@ export class Controller {
           this.board.board[mutareRecomandata.x][mutareRecomandata.y];
 
         // O setăm ca fiind piesa activă și îi atribuim semnul AI-ului
-        piesaAlesa.sign = this.aiSign;
+        piesaAlesa.sign = this.signP2;
         this.activeCell = piesaAlesa;
 
         // 2. Executăm mutarea și împingerea pe linie în mod direct, fără să mai simulăm click-uri pe săgeți
@@ -190,7 +190,7 @@ export class Controller {
         }
 
         // Schimbăm rândul înapoi la jucătorul uman
-        this.currentSign = this.humanSign;
+        this.currentSign = this.signP1;
       }
 
       this.isAiThinking = false;
@@ -204,29 +204,7 @@ export class Controller {
     let playerColor = this.currentSign === "x" ? "#EC4899" : "#3B82F6";
     fill(playerColor);
     text(this.currentSign.toUpperCase(), CONFIG.canvas.width / 2 - 160, 30);
-
-   // if (this.winnerText !== "") {
-   //   let boxWidth = 420;
-    //  let boxHeight = 100;
-    //  let x = CONFIG.canvas.width / 2 - boxWidth / 2;
-    //  let y = CONFIG.canvas.height / 2 - boxHeight / 2 + 220;
-
-      //fill(255, 255, 255, 220);
-      //stroke("#fdfffe");
-      //strokeWeight(4);
-     // rect(x, y, boxWidth, boxHeight, 20);
-
-      textAlign(CENTER, CENTER);
-      textSize(42);
-      fill("#000000");
-      noStroke();
-      text(
-        this.winnerText,
-        CONFIG.canvas.width / 2,
-        CONFIG.canvas.height / 2 + 220,
-      );
-    }
-  //}
+  }
 
   changeBoardMode(cell) {
     if (
@@ -309,31 +287,19 @@ export class Controller {
     return null;
   }
 
-  swapRolesForRound() {
-    // Inversăm semnele (tu devii semnul opus în runda următoare)
-    const oldHuman = this.humanSign;
-    this.humanSign = this.aiSign;
-    this.aiSign = oldHuman;
-
-    // În runda următoare tu începi (cum ai cerut)
-    this.currentSign = this.humanSign;
-  }
-
   resetGameBoard() {
     this.board = new Board();
     this.isInChangeBoardMode = false;
     this.isChangedState = false;
     this.activeCell = null;
     // setăm din nou runda astfel încât să fie corect pentru semnele curente
-    this.currentSign = this.humanSign;
+    this.currentSign = this.signP1;
     this.winnerText = "";
     this.isAiThinking = false;
   }
 
   async showWinner(winner) {
     this.winnerText = this.players[winner] + " a câștigat!";
-    await this.delay(5000);
-    this.resetGameBoard();
   }
 
   async cellClick(cell, sign = this.currentSign) {

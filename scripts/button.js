@@ -7,18 +7,11 @@ export const RB = {
     o: 0,
   },
 
-  restartBtn: {
-    x: CONFIG.canvas.width / 2 - CONFIG.canvas.width / 5,
-    y: CONFIG.canvas.height - CONFIG.canvas.height / 7.2,
-    w: CONFIG.canvas.width / 2.5,
-    h: CONFIG.canvas.height / 11,
-  },
-
   playAgainBtn: {
     x: CONFIG.canvas.width / 2 - CONFIG.canvas.width / 6,
     y: CONFIG.canvas.height - CONFIG.canvas.height / 8,
     w: CONFIG.canvas.width / 3,
-    h: CONFIG.canvas.height / 13,
+    h: CONFIG.canvas.height / 13
   },
 
   soundEnabled: true,
@@ -28,7 +21,7 @@ export const RB = {
     x: 15,
     y: CONFIG.canvas.height - 65,
     w: 50,
-    h: 50,
+    h: 50
   },
 
   isRulesOpen: false,
@@ -37,7 +30,7 @@ export const RB = {
     x: 15,
     y: CONFIG.canvas.height - 115,
     w: 50,
-    h: 50,
+    h: 50
   },
 
   isMouseInside: function (btn) {
@@ -505,6 +498,7 @@ export const RB = {
       window.controller.isInChangeBoardMode = false;
       window.controller.isChangedState = false;
       window.controller.activeCell = null;
+      window.controller.currentSign = window.controller.signP1;
       // Turn de început va fi tratat de Controller în funcție de opțiunea de inversare roles.
       // Nu forțăm aici currentSign la "x".
       window.controller.winnerText = "";
@@ -613,9 +607,6 @@ export const RB = {
       RB.playSound("click");
       RB.resetBoardOnly(true);
       console.log("Runda noua: jucatorii au fost inversati.");
-      if (window.controller && window.controller.swapRolesForRound) {
-        window.controller.swapRolesForRound();
-      }
       return;
     }
 
@@ -635,14 +626,6 @@ export const RB = {
     RB.isRulesOpen = true;
     return;
   }
-
-  // buton restart
-if (RB.isMouseInside(RB.restartBtn)) {
-  RB.playSound("click");
-  RB.resetFullGame();
-  return;
-}
-
 },
 
 swapPlayersAndScores: function () {
